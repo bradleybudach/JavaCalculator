@@ -18,6 +18,19 @@ public class Calculator {
 			
 			if (Character.isDigit(currentToken)) { // If the current character is a number. 
 				String number = "" + currentToken;
+				
+				// checks to see if a number is being subtracted from another number or is a negative number
+				if ((i-1) >= 0 && tokens[i-1] == '-') {
+					if ((i-2) == -1) {
+						number = "-" + number; // prepends the negative sign on a number
+						operators.pop(); // removes the - from operators as it is now part of a number
+					} else if (!Character.isDigit(tokens[i-2])) {
+						number = "-" + number; // prepends the negative sign on a number
+						operators.pop(); // removes the - from operators as it is now part of a number
+					}
+				}
+				
+				
 				while ((i+1) < tokens.length && (Character.isDigit(tokens[i+1]) || tokens[i+1] == '.')) { // if the character right after the last one is a number or decimal too, add that to an overall number.
 					// increase the i and add that digit to the overall number
 					i++;
