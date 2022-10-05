@@ -1,5 +1,6 @@
 package calculator;
 import java.util.Stack;
+import java.util.Collections;
 
 public class Calculator {
 
@@ -58,7 +59,6 @@ public class Calculator {
 				operators.pop(); // removes the remaining parentheses.
 			}
 		}
-		
 		
 		while (!operators.empty()) {
 			numbers.push(getResult(operators.pop(), numbers.pop(), numbers.pop()));
