@@ -1,4 +1,3 @@
-// Test - From Pronob
 package calculator;
 import java.util.Stack;
 
