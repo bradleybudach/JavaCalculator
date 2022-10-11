@@ -47,6 +47,9 @@ public class Calculator {
 				operators.push(currentToken);
 			} else if (currentToken == '(') {
 				if ((i-1) >= 0 && (Character.isDigit(tokens[i-1]) || tokens[i-1] == ')')) { // if there is a previous digit and it was a number or parenthesis, add multiplication to the operators. 10(3+5) = 10*(3+5) or (10)(3+5) = 10*(3+5)
+					while (!operators.empty() && hasPrecedence(operators.peek(), '*')) { // corrects order of operations before it adds the *
+						numbers.push(getResult(operators.pop(), numbers.pop(), numbers.pop())); // Finds the result of the operation on the last two numbers 
+					}
 					operators.push('*');
 				}
 				operators.push(currentToken);
