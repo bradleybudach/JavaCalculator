@@ -46,7 +46,7 @@ public class Calculator {
 				
 				operators.push(currentToken);
 			} else if (currentToken == '(') {
-				if ((i-1) >= 0 && Character.isDigit(tokens[i-1])) { // if there is a previous digit and it was a number, add multiplication to the operators. 10(3+5) = 10*(3+5)
+				if ((i-1) >= 0 && (Character.isDigit(tokens[i-1]) || tokens[i-1] == ')')) { // if there is a previous digit and it was a number or parenthesis, add multiplication to the operators. 10(3+5) = 10*(3+5) or (10)(3+5) = 10*(3+5)
 					operators.push('*');
 				}
 				operators.push(currentToken);
@@ -57,10 +57,14 @@ public class Calculator {
 				
 				operators.pop(); // removes the remaining parentheses.
 			}
+			System.out.println(numbers);
+			System.out.println(operators);
 		}
 		
 		while (!operators.empty()) {
 			numbers.push(getResult(operators.pop(), numbers.pop(), numbers.pop()));
+			System.out.println(numbers);
+			System.out.println(operators);
 		}
 		
 		return numbers.pop();
