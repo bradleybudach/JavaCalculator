@@ -21,10 +21,10 @@ public class Calculator {
 				
 				// checks to see if a number is being subtracted from another number or is a negative number
 				if ((i-1) >= 0 && tokens[i-1] == '-') {
-					if ((i-2) == -1) {
+					if ((i-1) == 0) { // if a - sign is the first symbol then it is a negative number not subraction
 						number = "-" + number; // prepends the negative sign on a number
 						operators.pop(); // removes the - from operators as it is now part of a number
-					} else if (!Character.isDigit(tokens[i-2])) {
+					} else if (!Character.isDigit(tokens[i-2]) && tokens[i-2] != ')') { // if the character before the - symbol is not a number or close parenthesis that means the number is negative, otherwise it will stay as subtraction
 						number = "-" + number; // prepends the negative sign on a number
 						operators.pop(); // removes the - from operators as it is now part of a number
 					}
@@ -60,14 +60,14 @@ public class Calculator {
 				
 				operators.pop(); // removes the remaining parentheses.
 			}
-			System.out.println(numbers);
-			System.out.println(operators);
+//			System.out.println(numbers);
+//			System.out.println(operators);
 		}
 		
 		while (!operators.empty()) {
 			numbers.push(getResult(operators.pop(), numbers.pop(), numbers.pop()));
-			System.out.println(numbers);
-			System.out.println(operators);
+//			System.out.println(numbers);
+//			System.out.println(operators);
 		}
 		
 		return numbers.pop();
