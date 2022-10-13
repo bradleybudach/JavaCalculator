@@ -40,21 +40,27 @@ public class Calculator {
 				currentToken = tokens[i]; // need to update the current token as i may have changed in the while loop.
 				numbers.push(Double.parseDouble(number)); // Add the number to the numbers stack.
 			} else if (currentToken == '+' || currentToken == '-' || currentToken == '*' || currentToken == '/' || currentToken == '%' || currentToken == '^') { // if the current token is a character
+				if (currentToken == '-' && i > 0 && (tokens[i-1] == '+' || tokens[i-1] == '-' || tokens[i-1] == '*' || tokens[i-1] == '/' || tokens[i-1] == '%' || tokens[i-1] == '^')) { // if there is a - sign next to another sign.
+					operators.push(currentToken);
+					continue; // skips the current loop if there is a negative next to another operator as that means the number is negative.
+				}
+				
 				while (!operators.empty() && hasPrecedence(operators.peek(), currentToken)) {
 					numbers.push(getResult(operators.pop(), numbers.pop(), numbers.pop())); // Finds the result of the operation on the last two numbers 
 				}
-				
 				operators.push(currentToken);
 			} else if (currentToken == '(') {
 				if ((i-1) >= 0 && (Character.isDigit(tokens[i-1]) || tokens[i-1] == ')')) { // if there is a previous digit and it was a number or parenthesis, add multiplication to the operators. 10(3+5) = 10*(3+5) or (10)(3+5) = 10*(3+5)
-					while (!operators.empty() && hasPrecedence(operators.peek(), '*')) { // corrects order of operations before it adds the *
+					while (!operators.empty() && hasPrecedence(operators.peek(), '*')) { // checks order of operations before it adds the *
 						numbers.push(getResult(operators.pop(), numbers.pop(), numbers.pop())); // Finds the result of the operation on the last two numbers 
 					}
-					operators.push('*');
+					
+					operators.push('*'); // if parenthesis are next to each other that means multiply
 				}
+				
 				operators.push(currentToken);
 			} else if (currentToken == ')') {
-				while (operators.peek() != '(') {
+				while (operators.peek() != '(') { // completes everything between the parenthesis if there is an expression inside.
 					numbers.push(getResult(operators.pop(), numbers.pop(), numbers.pop()));
 				}
 				
