@@ -140,6 +140,8 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 			IOArea.setCaretPosition(insertPos + 1); // Updates the caret position to be in the right spot.
 		} else if (key == '=' && !IOArea.getText().equals("")) { // equals key typed
 			btnEquals.doClick(); // clicks the equals button to get the answer
+		} else if (key == 'h') { // h clicks history button
+			btnHistory.doClick();
 		}
 	}
 
@@ -212,12 +214,7 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 			IOArea.setCaretPosition(insertPos + 1); // Updates the caret position to be in the right spot.
 		}
 	}
-
-	// Unused implementation for the keyReleased method of the KeyListener interface.
-	@Override
-	public void keyReleased(KeyEvent e) {
-	}
-
+	
 	// Adds a character at a given point in a string.
 	public String insertIntoText(String existingText, String insertString, int insertPos) {
 		String newText = new String();
@@ -248,5 +245,9 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 
 		return existingText;
 	}
+	
+	
+	@Override
+	public void keyReleased(KeyEvent e) {} // Unused implementation for the keyReleased method of the KeyListener interface.
 
 }
