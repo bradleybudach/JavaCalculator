@@ -9,56 +9,58 @@ import java.util.Arrays;
 
 public class CalculatorApp extends JFrame implements ActionListener, KeyListener {
 	private CalculatorButton btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnAdd, btnSubtract, btnDivide,
-			btnMultiply, btnMod, btnPow, btnParenthesisOpen, btnParenthesisClose, btnEquals, btnDot, btnBack, btnClear;
-	private ArrayList<CalculatorButton> buttons;
-	private JTextField IOArea;
+			btnMultiply, btnMod, btnPow, btnParenthesisOpen, btnParenthesisClose, btnEquals, btnDot, btnBack, btnClear, btnHistory; // UI buttons
+	private JTextField IOArea; // Input/Output area
+	private String previousAns;
 
 	public CalculatorApp() {
-		setTitle("Calculator");
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		setSize(450, 820);
-		setBackground(Color.BLACK);
-		getContentPane().setBackground(Color.DARK_GRAY);
+		setTitle("Calculator"); // sets title
+		setDefaultCloseOperation(EXIT_ON_CLOSE); // closes program when X button clicked
+		setLayout(new GridBagLayout()); // git layout with custom rows
+		GridBagConstraints c = new GridBagConstraints(); // constraints to be adapted for each grid item.
+		setSize(450, 800); // sets the default size for the frame
+		getContentPane().setBackground(Color.DARK_GRAY); // Frame background color
+		previousAns = "";
+		Font defaultFont = new Font("DialogInput", Font.PLAIN, 40);
+		Font historyFont = new Font("DialogInput", Font.PLAIN, 20); // Custom font for the History bar
 
 		// Initializes components:
-		btn1 = new CalculatorButton(0, 3, 1, Color.BLACK, "1");
-		btn2 = new CalculatorButton(1, 3, 1, Color.BLACK, "2");
-		btn3 = new CalculatorButton(2, 3, 1, Color.BLACK, "3");
-		btn4 = new CalculatorButton(0, 4, 1, Color.BLACK, "4");
-		btn5 = new CalculatorButton(1, 4, 1, Color.BLACK, "5");
-		btn6 = new CalculatorButton(2, 4, 1, Color.BLACK, "6");
-		btn7 = new CalculatorButton(0, 5, 1, Color.BLACK, "7");
-		btn8 = new CalculatorButton(1, 5, 1, Color.BLACK, "8");
-		btn9 = new CalculatorButton(2, 5, 1, Color.BLACK, "9");
-		btn0 = new CalculatorButton(0, 6, 1, Color.BLACK, "0");
-		btnDot = new CalculatorButton(1, 6, 1, Color.BLACK, ".");
-		btnAdd = new CalculatorButton(3, 2, 1, Color.DARK_GRAY, "+");
-		btnSubtract = new CalculatorButton(3, 3, 1, Color.DARK_GRAY, "-");
-		btnDivide = new CalculatorButton(3, 4, 1, Color.DARK_GRAY, "/");
-		btnMultiply = new CalculatorButton(3, 5, 1, Color.DARK_GRAY, "*");
-		btnMod = new CalculatorButton(2, 2, 1, Color.DARK_GRAY, "%");
-		btnPow = new CalculatorButton(3, 6, 1, Color.DARK_GRAY, "^");
-		btnParenthesisOpen = new CalculatorButton(0, 2, 1, Color.DARK_GRAY, "(");
-		btnParenthesisClose = new CalculatorButton(1, 2, 1, Color.DARK_GRAY, ")");
-		btnEquals = new CalculatorButton(2, 6, 1, new Color(0, 120, 0), "=");
-		btnBack = new CalculatorButton(2, 1, 2, new Color(100, 20, 20), "\u232B");
-		btnClear = new CalculatorButton(0, 1, 2, new Color(100, 20, 20), "C");
+		btn1 = new CalculatorButton(0, 4, Color.BLACK, "1");
+		btn2 = new CalculatorButton(1, 4, Color.BLACK, "2");
+		btn3 = new CalculatorButton(2, 4, Color.BLACK, "3");
+		btn4 = new CalculatorButton(0, 5, Color.BLACK, "4");
+		btn5 = new CalculatorButton(1, 5, Color.BLACK, "5");
+		btn6 = new CalculatorButton(2, 5, Color.BLACK, "6");
+		btn7 = new CalculatorButton(0, 6, Color.BLACK, "7");
+		btn8 = new CalculatorButton(1, 6, Color.BLACK, "8");
+		btn9 = new CalculatorButton(2, 6, Color.BLACK, "9");
+		btn0 = new CalculatorButton(0, 7, Color.BLACK, "0");
+		btnDot = new CalculatorButton(1, 7, Color.BLACK, ".");
+		btnAdd = new CalculatorButton(3, 3, Color.DARK_GRAY, "+");
+		btnSubtract = new CalculatorButton(3, 4, Color.DARK_GRAY, "-");
+		btnDivide = new CalculatorButton(3, 5, Color.DARK_GRAY, "/");
+		btnMultiply = new CalculatorButton(3, 6, Color.DARK_GRAY, "*");
+		btnMod = new CalculatorButton(2, 3, Color.DARK_GRAY, "%");
+		btnPow = new CalculatorButton(3, 7, Color.DARK_GRAY, "^");
+		btnParenthesisOpen = new CalculatorButton(0, 3, Color.DARK_GRAY, "(");
+		btnParenthesisClose = new CalculatorButton(1, 3, Color.DARK_GRAY, ")");
+		btnEquals = new CalculatorButton(2, 7, new Color(0, 120, 0), "=");
+		btnBack = new CalculatorButton(2, 2, 2, new Color(100, 20, 20), "\u232B");
+		btnClear = new CalculatorButton(0, 2, 2, new Color(100, 20, 20), "C");
+		btnHistory = new CalculatorButton(0, 0, 4, Color.DARK_GRAY, ""); btnHistory.setCustomFont(historyFont); btnHistory.setCustomColumnHeight(0.5);
 		IOArea = new JTextField();
 
 		// adds all buttons to the list of buttons.
-		buttons = new ArrayList<CalculatorButton>(
+		ArrayList<CalculatorButton> buttons = new ArrayList<CalculatorButton>(
 				Arrays.asList(btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnDot, btnAdd, btnSubtract,
-						btnDivide, btnMultiply, btnMod, btnPow, btnParenthesisOpen, btnParenthesisClose, btnEquals, btnBack, btnClear));
+						btnDivide, btnMultiply, btnMod, btnPow, btnParenthesisOpen, btnParenthesisClose, btnEquals, btnBack, btnClear, btnHistory));
 
 		// Sets Styles:
-		Font textFont = new Font("DialogInput", Font.PLAIN, 40); // Calculator font
-
 		// Grid Defaults:
 		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
+		//c.anchor = GridBagConstraints.NORTHWEST;
 
 		for (int i = 0; i < buttons.size(); i++) {
 			CalculatorButton calcBtn = buttons.get(i);
@@ -66,11 +68,13 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 			// Sets the styling for all the buttons.
 			calcBtn.setBackground(calcBtn.color);
 			calcBtn.setForeground(Color.WHITE);
-			calcBtn.setFont(textFont);
+			calcBtn.setFont(calcBtn.font);
 			calcBtn.setFocusable(false);
-
+			
 			// adds buttons to their correct position on the grid
 			c.gridwidth = calcBtn.columnWidth;
+			c.weighty = calcBtn.columnHeight;
+			c.gridheight = 1;
 			c.gridx = calcBtn.xPosition;
 			c.gridy = calcBtn.yPosition;
 			add(calcBtn, c);
@@ -78,18 +82,22 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 			calcBtn.addActionListener(this); // adds listener to all buttons
 		}
 
+		btnHistory.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
+		btnHistory.setPreferredSize(new Dimension(0, 20));
+		btnHistory.setHorizontalAlignment(SwingConstants.LEFT);
 		// Sets styles and displays the Input/Output text-box in the GUI:
 		IOArea.setBackground(Color.BLACK);
 		IOArea.setForeground(Color.WHITE);
-		IOArea.setFont(textFont);
+		IOArea.setFont(defaultFont);
 		IOArea.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
 		IOArea.setEditable(false);
 		IOArea.setCaretColor(Color.WHITE);
 		IOArea.getCaret().setVisible(true);
 
+		c.weighty = 1;
 		c.gridwidth = 4;
 		c.gridx = 0;
-		c.gridy = 0;
+		c.gridy = 1;
 		add(IOArea, c);
 
 		IOArea.addKeyListener(this);
@@ -160,15 +168,24 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		String existingText = IOArea.getText();
+		
 		if (e.getSource() == btnEquals) { // equals button pressed
-			double answer = Calculator.evaluateExpression(IOArea.getText());
-			if (answer % 1 == 0) { // if the number is a whole number (decimal is 0)
-				IOArea.setText(Integer.toString((int) answer));
-			} else {
-				IOArea.setText(Double.toString(answer));
+			if (existingText.length() > 0) {
+				double answer = Calculator.evaluateExpression(existingText);
+				if (answer % 1 == 0) { // if the number is a whole number (decimal is 0)
+					String ansString = Integer.toString((int) answer);
+					IOArea.setText(ansString);
+					previousAns = ansString;
+				} else {
+					String ansString = Double.toString(answer);
+					IOArea.setText(ansString);
+					previousAns = ansString;
+				}
+				
+				btnHistory.setText(existingText + " = " + previousAns);
 			}
 		} else if (e.getSource() == btnBack) { // backspace button
-			String existingText = IOArea.getText();
 			if (existingText.length() > 0) {
 				int removeAt = IOArea.getCaretPosition();
 
@@ -183,6 +200,10 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 			}
 		} else if (e.getSource() == btnClear) { // clear button
 			IOArea.setText(""); // clears text
+		} else if (e.getSource() == btnHistory) { // history button
+			if (previousAns.length() > 0) {
+				IOArea.setText(IOArea.getText() + previousAns); // appends the answer to the I/O text-box
+			}
 		} else { // any other button
 			CalculatorButton btn = (CalculatorButton) e.getSource(); // gets the source of which button is pressed as a CalculatorButton
 			int insertPos = IOArea.getCaretPosition();
