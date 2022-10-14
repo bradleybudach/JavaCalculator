@@ -1,6 +1,6 @@
 package calculator;
 
-import java.util.Scanner;
+//import java.util.Scanner; console support
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -11,17 +11,17 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 	private CalculatorButton btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnAdd, btnSubtract, btnDivide,
 			btnMultiply, btnMod, btnPow, btnParenthesisOpen, btnParenthesisClose, btnEquals, btnDot, btnBack, btnClear, btnHistory; // UI buttons
 	private JTextField IOArea; // Input/Output area
-	private String previousAns;
+	private String previousAns; // Answer of the last expression.
 
 	public CalculatorApp() {
 		setTitle("Calculator"); // sets title
 		setDefaultCloseOperation(EXIT_ON_CLOSE); // closes program when X button clicked
-		setLayout(new GridBagLayout()); // git layout with custom rows
-		GridBagConstraints c = new GridBagConstraints(); // constraints to be adapted for each grid item.
+		setLayout(new GridBagLayout()); // grid layout with custom rows
+		GridBagConstraints c = new GridBagConstraints(); // constraints to be adapted for each grid item
 		setSize(450, 800); // sets the default size for the frame
 		getContentPane().setBackground(Color.DARK_GRAY); // Frame background color
-		previousAns = "";
-		Font defaultFont = new Font("DialogInput", Font.PLAIN, 40);
+		previousAns = ""; // initializes previouAns
+		Font defaultFont = new Font("DialogInput", Font.PLAIN, 40); // default font 
 		Font historyFont = new Font("DialogInput", Font.PLAIN, 20); // Custom font for the History bar
 
 		// Initializes components:
@@ -56,11 +56,11 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 						btnDivide, btnMultiply, btnMod, btnPow, btnParenthesisOpen, btnParenthesisClose, btnEquals, btnBack, btnClear, btnHistory));
 
 		// Sets Styles:
+		
 		// Grid Defaults:
 		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.BOTH;
-		//c.anchor = GridBagConstraints.NORTHWEST;
 
 		for (int i = 0; i < buttons.size(); i++) {
 			CalculatorButton calcBtn = buttons.get(i);
@@ -82,10 +82,12 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 			calcBtn.addActionListener(this); // adds listener to all buttons
 		}
 
+		// History button styles:
 		btnHistory.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
 		btnHistory.setPreferredSize(new Dimension(0, 20));
 		btnHistory.setHorizontalAlignment(SwingConstants.LEFT);
-		// Sets styles and displays the Input/Output text-box in the GUI:
+		
+		// Input/Output area styles:
 		IOArea.setBackground(Color.BLACK);
 		IOArea.setForeground(Color.WHITE);
 		IOArea.setFont(defaultFont);
@@ -99,8 +101,9 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		c.gridx = 0;
 		c.gridy = 1;
 		add(IOArea, c);
-
-		IOArea.addKeyListener(this);
+		
+		
+		IOArea.addKeyListener(this); // key listener for the Input/Output Area.
 
 		addWindowFocusListener(new WindowAdapter() { // Makes the caret reappear in the text-box when the window is selected (after selecting a different window)
 			public void windowGainedFocus(WindowEvent e) {
@@ -109,12 +112,14 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		});
 	}
 
-	public String readInputFromConsole() {
-		Scanner in = new Scanner(System.in);
-		System.out.print("Enter epxression: ");
-		return in.nextLine();
-	}
+//	Console App Support:
+//	public String readInputFromConsole() {
+//		Scanner in = new Scanner(System.in);
+//		System.out.print("Enter epxression: ");
+//		return in.nextLine();
+//	}
 
+	// Main method
 	public static void main(String[] args) {
 		CalculatorApp app = new CalculatorApp();
 		app.setVisible(true);
@@ -236,11 +241,10 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 
 	// Removes a character from a given point in a string.
 	public String removeFromText(String existingText, int removeAt) {
-		if (removeAt == existingText.length()) {
-			existingText = existingText.substring(0, existingText.length() - 1);
-		} else if (removeAt > 0) {
-			existingText = existingText.substring(0, removeAt - 1)
-					+ existingText.substring(removeAt, existingText.length());
+		if (removeAt == existingText.length()) { // if the caret is at the end of the text
+			existingText = existingText.substring(0, existingText.length() - 1); // removes the last character
+		} else if (removeAt > 0) { // if the caret is somewhere in the text
+			existingText = existingText.substring(0, removeAt - 1) + existingText.substring(removeAt, existingText.length()); // removes a character at the given position
 		}
 
 		return existingText;
