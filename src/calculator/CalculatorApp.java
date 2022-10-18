@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CalculatorApp extends JFrame implements ActionListener, KeyListener {
+	// TODO: have history be a drop-down, add CE button.
 	private CalculatorButton btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnAdd, btnSubtract, btnDivide,
 			btnMultiply, btnMod, btnPow, btnParenthesisOpen, btnParenthesisClose, btnEquals, btnDot, btnBack, btnClear, btnHistory; // UI buttons
 	private JTextField IOArea; // Input/Output area
@@ -45,8 +46,8 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		btnParenthesisOpen = new CalculatorButton(0, 3, Color.DARK_GRAY, "(");
 		btnParenthesisClose = new CalculatorButton(1, 3, Color.DARK_GRAY, ")");
 		btnEquals = new CalculatorButton(2, 7, new Color(0, 120, 0), "=");
-		btnBack = new CalculatorButton(2, 2, 2, new Color(100, 20, 20), "\u232B");
-		btnClear = new CalculatorButton(0, 2, 2, new Color(100, 20, 20), "C");
+		btnBack = new CalculatorButton(2, 2, 2, new Color(100, 20, 20), "\u232B"); btnBack.setCustomColumnHeight(0.5);
+		btnClear = new CalculatorButton(0, 2, 2, new Color(100, 20, 20), "C"); btnClear.setCustomColumnHeight(0.5);
 		btnHistory = new CalculatorButton(0, 0, 4, Color.DARK_GRAY, ""); btnHistory.setCustomFont(historyFont); btnHistory.setCustomColumnHeight(0.5);
 		IOArea = new JTextField();
 
@@ -66,10 +67,6 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 			CalculatorButton calcBtn = buttons.get(i);
 
 			// Sets the styling for all the buttons.
-			calcBtn.setBackground(calcBtn.color);
-			calcBtn.setForeground(Color.WHITE);
-			calcBtn.setFont(calcBtn.font);
-			calcBtn.setFocusable(false);
 			
 			// adds buttons to their correct position on the grid
 			c.gridwidth = calcBtn.columnWidth;
@@ -78,7 +75,8 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 			c.gridx = calcBtn.xPosition;
 			c.gridy = calcBtn.yPosition;
 			add(calcBtn, c);
-
+			
+			calcBtn.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 			calcBtn.addActionListener(this); // adds listener to all buttons
 		}
 

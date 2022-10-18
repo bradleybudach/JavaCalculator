@@ -3,6 +3,7 @@ package calculator;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 
 public class CalculatorButton extends JButton {
 	protected Color color;
@@ -17,6 +18,11 @@ public class CalculatorButton extends JButton {
 		color = c;
 		xPosition = x;
 		yPosition = y;
+		
+		super.setBackground(color);
+		super.setForeground(Color.WHITE);
+		super.setFont(font);
+		super.setFocusable(false);
 	}
 	
 	public CalculatorButton(int x, int y, int width, Color c, String btnTxt) {
@@ -25,6 +31,11 @@ public class CalculatorButton extends JButton {
 		xPosition = x;
 		yPosition = y;
 		columnWidth = width;
+		
+		super.setBackground(color);
+		super.setForeground(Color.WHITE);
+		super.setFont(font);
+		super.setFocusable(false);
 	}
 	
 	public void setCustomColumnHeight(double height) {
