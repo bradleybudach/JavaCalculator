@@ -1,7 +1,7 @@
 package calculator;
 import java.util.Stack;
 
-public class Calculator {
+public final class Calculator {
 
 	/*
 	 * This method implements a Shunting Yard algorithm (with changes made to suit this specific project) to evaluate a string containing a mathematical expression. Credit to Edsger Dijkstra: the inventor of the algorithm.

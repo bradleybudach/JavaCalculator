@@ -21,6 +21,9 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		GridBagConstraints c = new GridBagConstraints(); // constraints to be adapted for each grid item
 		setSize(450, 800); // sets the default size for the frame
 		getContentPane().setBackground(Color.DARK_GRAY); // Frame background color
+		Image icon = Toolkit.getDefaultToolkit().getImage("C:\\Users\\wb8295nb\\eclipse-workspace\\GroupProject\\src\\logo.png"); // gets the icon image
+		setIconImage(icon); // sets the icon
+		
 		previousAns = ""; // initializes previouAns
 		Font defaultFont = new Font("DialogInput", Font.PLAIN, 40); // default font 
 		Font historyFont = new Font("DialogInput", Font.PLAIN, 20); // Custom font for the History bar
