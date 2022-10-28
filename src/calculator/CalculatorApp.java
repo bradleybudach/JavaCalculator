@@ -18,7 +18,6 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		setTitle("Calculator"); // sets title
 		setDefaultCloseOperation(EXIT_ON_CLOSE); // closes program when X button clicked
 		setLayout(new GridBagLayout()); // grid layout with custom rows
-		GridBagConstraints c = new GridBagConstraints(); // constraints to be adapted for each grid item
 		setSize(450, 800); // sets the default size for the frame
 		getContentPane().setBackground(Color.DARK_GRAY); // Frame background color
 		Image icon = Toolkit.getDefaultToolkit().getImage("C:\\Users\\wb8295nb\\eclipse-workspace\\GroupProject\\src\\logo.png"); // gets the icon image
@@ -60,30 +59,11 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 						btnDivide, btnMultiply, btnMod, btnPow, btnParenthesisOpen, btnParenthesisClose, btnEquals, btnBack, btnClear, btnHistory));
 
 		// Sets Styles:
-		
-		// Grid Defaults:
-		c.weightx = 1;
-		c.weighty = 1;
-		c.fill = GridBagConstraints.BOTH;
-
-		for (int i = 0; i < buttons.size(); i++) {
-			CalculatorButton calcBtn = buttons.get(i);
-
-			// Sets the styling for all the buttons.
-			
-			// adds buttons to their correct position on the grid
-			c.gridwidth = calcBtn.columnWidth;
-			c.weighty = calcBtn.columnHeight;
-			c.gridheight = 1;
-			c.gridx = calcBtn.xPosition;
-			c.gridy = calcBtn.yPosition;
-			add(calcBtn, c);
-			
-			calcBtn.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
-			calcBtn.addActionListener(this); // adds listener to all buttons
+		for (CalculatorButton btn : buttons) {
+			btn.displaySelf(this);
 		}
 
-		// History button styles:
+		// History button style:
 		btnHistory.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
 		btnHistory.setPreferredSize(new Dimension(0, 20));
 		btnHistory.setHorizontalAlignment(SwingConstants.LEFT);
@@ -97,12 +77,14 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		IOArea.setCaretColor(Color.WHITE);
 		IOArea.getCaret().setVisible(true);
 
+		GridBagConstraints c = new GridBagConstraints(); // constraints to describe how the item is displayed
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 1;
 		c.weighty = 1;
 		c.gridwidth = 4;
 		c.gridx = 0;
 		c.gridy = 1;
 		add(IOArea, c);
-		
 		
 		IOArea.addKeyListener(this); // key listener for the Input/Output Area.
 
