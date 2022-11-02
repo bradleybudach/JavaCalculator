@@ -18,7 +18,7 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		setTitle("Calculator"); // sets title
 		setDefaultCloseOperation(EXIT_ON_CLOSE); // closes program when X button clicked
 		setLayout(new GridBagLayout()); // grid layout with custom rows
-		setSize(450, 800); // sets the default size for the frame
+		setSize(450, 800); // sets the default size for the frame	
 		getContentPane().setBackground(Color.DARK_GRAY); // Frame background color
 		Image icon = Toolkit.getDefaultToolkit().getImage("C:\\Users\\wb8295nb\\eclipse-workspace\\GroupProject\\src\\logo.png"); // gets the icon image
 		setIconImage(icon); // sets the icon
@@ -52,7 +52,7 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		btnClear = new CalculatorButton(0, 2, 2, new Color(100, 20, 20), "C"); btnClear.setCustomColumnHeight(0.5);
 		btnHistory = new CalculatorButton(0, 0, 4, Color.DARK_GRAY, ""); btnHistory.setCustomFont(historyFont); btnHistory.setCustomColumnHeight(0.5);
 		IOArea = new JTextField();
-
+		
 		// adds all buttons to the list of buttons.
 		ArrayList<CalculatorButton> buttons = new ArrayList<CalculatorButton>(
 				Arrays.asList(btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnDot, btnAdd, btnSubtract,
@@ -78,12 +78,7 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		IOArea.getCaret().setVisible(true);
 
 		GridBagConstraints c = new GridBagConstraints(); // constraints to describe how the item is displayed
-		c.fill = GridBagConstraints.BOTH;
-		c.weightx = 1;
-		c.weighty = 1;
-		c.gridwidth = 4;
-		c.gridx = 0;
-		c.gridy = 1;
+		c.fill = GridBagConstraints.BOTH; c.weightx = 1; c.weighty = 1; c.gridwidth = 4; c.gridx = 0; c.gridy = 1;
 		add(IOArea, c);
 		
 		IOArea.addKeyListener(this); // key listener for the Input/Output Area.

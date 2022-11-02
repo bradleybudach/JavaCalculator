@@ -4,11 +4,13 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.GridBagConstraints;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class CalculatorButton extends JButton {
+public class CalculatorButton extends JButton implements MouseListener {
 	private Color color;
+	private Color hoverColor;
 	private int xPosition;
 	private int yPosition;
 	private int columnWidth = 1;
@@ -20,6 +22,7 @@ public class CalculatorButton extends JButton {
 		color = c;
 		xPosition = x;
 		yPosition = y;
+		hoverColor = new Color(color.getRed()+30, color.getGreen()+30, color.getBlue()+30);
 	}
 	
 	public CalculatorButton(int x, int y, int width, Color c, String btnTxt) {
@@ -28,6 +31,7 @@ public class CalculatorButton extends JButton {
 		xPosition = x;
 		yPosition = y;
 		columnWidth = width;
+		hoverColor = new Color(color.getRed()+30, color.getGreen()+30, color.getBlue()+30);
 	}
 	
 	public void setCustomColumnHeight(double height) {
@@ -56,6 +60,29 @@ public class CalculatorButton extends JButton {
 		c.gridy = yPosition;
 		setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
 		addActionListener(app);
+		addMouseListener(this);
 		app.add(this, c);
 	}
+	
+	@Override
+    public void mouseEntered(MouseEvent e)
+    {
+        
+        setBackground(hoverColor);
+    }
+
+	@Override
+	public void mouseExited(MouseEvent e)
+	{
+	     setBackground(color);
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e){}
+
+    @Override
+    public void mousePressed(MouseEvent e){}
+
+    @Override
+    public void mouseReleased(MouseEvent e){}
 }
