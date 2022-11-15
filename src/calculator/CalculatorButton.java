@@ -22,7 +22,7 @@ public class CalculatorButton extends JButton implements MouseListener {
 		color = c;
 		xPosition = x;
 		yPosition = y;
-		hoverColor = new Color(color.getRed()+30, color.getGreen()+30, color.getBlue()+30);
+		hoverColor = new Color(color.getRed(), color.getGreen(), color.getBlue());
 	}
 	
 	public CalculatorButton(int x, int y, int width, Color c, String btnTxt) {
@@ -31,7 +31,7 @@ public class CalculatorButton extends JButton implements MouseListener {
 		xPosition = x;
 		yPosition = y;
 		columnWidth = width;
-		hoverColor = new Color(color.getRed()+30, color.getGreen()+30, color.getBlue()+30);
+		hoverColor = new Color(color.getRed(), color.getGreen(), color.getBlue());
 	}
 	
 	public void setCustomColumnHeight(double height) {
