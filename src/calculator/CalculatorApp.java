@@ -1,3 +1,43 @@
+/*
+ * Class name: CS 234(Group Project)
+ * Author:Bradly Budach, Pronob Kumar
+ * Date: 11/07/2022
+ * Problem: 
+ * 		- Make a calculator
+ * 		- Have the calculator popup in the GUI
+ * 		- Calculator should have buttons
+ * 		- Calculator should take inputs
+ * 		- Use the calculator to calculate values
+ * Goals:
+ *      - Have the calculator popup in the GUI
+ * 		- Calculator should have buttons
+ * 		- Calculator should take inputs
+ * 		- Use the calculator to calculate values
+ * Inputs:
+ *      - math problem 
+ * Outputs:
+ *      - answer of the problem 
+ * Required packages:
+ * 		- import java.awt.*;
+ * 		- import java.awt.event.*;
+ * 		- import javax.swing.*;
+ * 		- import java.util.ArrayList;
+ * 		- import java.util.Arrays;
+ * Test cases:
+ *      - If we put 5+5	the result will show 10
+ *      - If we put 5-5 the result will show 0
+ *      - If we put 5*5	the result will show 25
+ *      - If we put 5/5	the result will show 1
+ *      - If we put 5%5	the result will show 0
+ *      - If we put 5^5	the result will show 3125
+ *      - If we put (5+5)*2	the result will show 20
+ * Pseudo code:
+ *     Step 1: It's on you
+ *     Step 2: 
+ *     Step 3: 
+ */
+
+
 package calculator;
 
 //import java.util.Scanner; console support
@@ -14,6 +54,15 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 	private JTextField IOArea; // Input/Output area
 	private String previousAns; // Answer of the last expression.
 
+	/* This method is for building the GUI and activate all the buttons 
+	 * Inputs:
+	 * 		- math problems 
+     * Outputs: 
+     * 		- answer of the math problem
+     * Pseudocode:
+     *     - ????
+     *     - 
+	 */
 	public CalculatorApp() {
 		setTitle("Calculator"); // sets title
 		setDefaultCloseOperation(EXIT_ON_CLOSE); // closes program when X button clicked
@@ -28,29 +77,29 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		Font historyFont = new Font("DialogInput", Font.PLAIN, 20); // Custom font for the History bar
 
 		// Initializes components:
-		btn1 = new CalculatorButton(0, 4, Color.BLACK, "1");
-		btn2 = new CalculatorButton(1, 4, Color.BLACK, "2");
-		btn3 = new CalculatorButton(2, 4, Color.BLACK, "3");
-		btn4 = new CalculatorButton(0, 5, Color.BLACK, "4");
-		btn5 = new CalculatorButton(1, 5, Color.BLACK, "5");
-		btn6 = new CalculatorButton(2, 5, Color.BLACK, "6");
-		btn7 = new CalculatorButton(0, 6, Color.BLACK, "7");
-		btn8 = new CalculatorButton(1, 6, Color.BLACK, "8");
-		btn9 = new CalculatorButton(2, 6, Color.BLACK, "9");
-		btn0 = new CalculatorButton(0, 7, Color.BLACK, "0");
-		btnDot = new CalculatorButton(1, 7, Color.BLACK, ".");
-		btnAdd = new CalculatorButton(3, 3, Color.DARK_GRAY, "+");
-		btnSubtract = new CalculatorButton(3, 4, Color.DARK_GRAY, "-");
-		btnDivide = new CalculatorButton(3, 5, Color.DARK_GRAY, "/");
-		btnMultiply = new CalculatorButton(3, 6, Color.DARK_GRAY, "*");
-		btnMod = new CalculatorButton(2, 3, Color.DARK_GRAY, "%");
-		btnPow = new CalculatorButton(3, 7, Color.DARK_GRAY, "^");
-		btnParenthesisOpen = new CalculatorButton(0, 3, Color.DARK_GRAY, "(");
-		btnParenthesisClose = new CalculatorButton(1, 3, Color.DARK_GRAY, ")");
-		btnEquals = new CalculatorButton(2, 7, new Color(0, 120, 0), "=");
-		btnBack = new CalculatorButton(2, 2, 2, new Color(100, 20, 20), "\u232B"); btnBack.setCustomColumnHeight(0.5);
-		btnClear = new CalculatorButton(0, 2, 2, new Color(100, 20, 20), "C"); btnClear.setCustomColumnHeight(0.5);
-		btnHistory = new CalculatorButton(0, 0, 4, Color.DARK_GRAY, ""); btnHistory.setCustomFont(historyFont); btnHistory.setCustomColumnHeight(0.5);
+		btn1 = new CalculatorButton(0, 4, Color.BLACK, "1");	// Button for pressing 1 on the calculator
+		btn2 = new CalculatorButton(1, 4, Color.BLACK, "2");	// Button for pressing 2 on the calculator
+		btn3 = new CalculatorButton(2, 4, Color.BLACK, "3");	// Button for pressing 3 on the calculator
+		btn4 = new CalculatorButton(0, 5, Color.BLACK, "4");	// Button for pressing 4 on the calculator
+		btn5 = new CalculatorButton(1, 5, Color.BLACK, "5");	// Button for pressing 5 on the calculator
+		btn6 = new CalculatorButton(2, 5, Color.BLACK, "6");	// Button for pressing 6 on the calculator
+		btn7 = new CalculatorButton(0, 6, Color.BLACK, "7");	// Button for pressing 7 on the calculator
+		btn8 = new CalculatorButton(1, 6, Color.BLACK, "8");	// Button for pressing 8 on the calculator
+		btn9 = new CalculatorButton(2, 6, Color.BLACK, "9");	// Button for pressing 9 on the calculator
+		btn0 = new CalculatorButton(0, 7, Color.BLACK, "0");	// Button for pressing 0 on the calculator
+		btnDot = new CalculatorButton(1, 7, Color.BLACK, ".");		// Button for pressing . on the calculator
+		btnAdd = new CalculatorButton(3, 3, Color.DARK_GRAY, "+");	// Button for pressing + on the calculator
+		btnSubtract = new CalculatorButton(3, 4, Color.DARK_GRAY, "-");		// Button for pressing - on the calculator
+		btnDivide = new CalculatorButton(3, 5, Color.DARK_GRAY, "/");		// Button for pressing / on the calculator
+		btnMultiply = new CalculatorButton(3, 6, Color.DARK_GRAY, "*");		// Button for pressing * on the calculator
+		btnMod = new CalculatorButton(2, 3, Color.DARK_GRAY, "%");			// Button for pressing % on the calculator
+		btnPow = new CalculatorButton(3, 7, Color.DARK_GRAY, "^");			// Button for pressing ^ on the calculator
+		btnParenthesisOpen = new CalculatorButton(0, 3, Color.DARK_GRAY, "(");		// Button for pressing ( on the calculator
+		btnParenthesisClose = new CalculatorButton(1, 3, Color.DARK_GRAY, ")");		// Button for pressing ) on the calculator
+		btnEquals = new CalculatorButton(2, 7, new Color(0, 120, 0), "=");			// Button for pressing = on the calculator
+		btnBack = new CalculatorButton(2, 2, 2, new Color(100, 20, 20), "\u232B"); btnBack.setCustomColumnHeight(0.5);		
+		btnClear = new CalculatorButton(0, 2, 2, new Color(100, 20, 20), "C"); btnClear.setCustomColumnHeight(0.5);			// Button for pressing "C" on the calculator
+		btnHistory = new CalculatorButton(0, 0, 4, Color.DARK_GRAY, ""); btnHistory.setCustomFont(historyFont); btnHistory.setCustomColumnHeight(0.5);		// Space for showing the last answer 
 		IOArea = new JTextField();
 		
 		// adds all buttons to the list of buttons.
@@ -60,22 +109,22 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 
 		// Sets Styles:
 		for (CalculatorButton btn : buttons) {
-			btn.displaySelf(this);
+			btn.displaySelf(this);		//All the buttons in a self display and activate with the mouse button
 		}
 
 		// History button style:
-		btnHistory.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
+		btnHistory.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));		//Keep the 
 		btnHistory.setPreferredSize(new Dimension(0, 20));
 		btnHistory.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		// Input/Output area styles:
-		IOArea.setBackground(Color.BLACK);
-		IOArea.setForeground(Color.WHITE);
-		IOArea.setFont(defaultFont);
+		IOArea.setBackground(Color.BLACK);		// Setting Background color to black
+		IOArea.setForeground(Color.WHITE);		// setting Foreground color to white 
+		IOArea.setFont(defaultFont);			// Setting the font 
 		IOArea.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
-		IOArea.setEditable(false);
+		IOArea.setEditable(false);				// Make the area code unable to edit 
 		IOArea.setCaretColor(Color.WHITE);
-		IOArea.getCaret().setVisible(true);
+		IOArea.getCaret().setVisible(true);		// Make it visible to the user 
 
 		GridBagConstraints c = new GridBagConstraints(); // constraints to describe how the item is displayed
 		c.fill = GridBagConstraints.BOTH; c.weightx = 1; c.weighty = 1; c.gridwidth = 4; c.gridx = 0; c.gridy = 1;
@@ -97,7 +146,14 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 //		return in.nextLine();
 //	}
 
-	// Main method
+	/* This method is the main method 
+	 * Inputs:
+	 * 		- math problems 
+     * Outputs: 
+     * 		- answer of the math problem
+     * Pseudocode:
+     *     - set the app visible
+	 */
 	public static void main(String[] args) {
 		CalculatorApp app = new CalculatorApp();
 		app.setVisible(true);
@@ -111,6 +167,15 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 	}
 
 	@Override
+	/* This method is for taking the key buttons pressed 
+	 * Inputs:
+	 * 		- math problems 
+     * Outputs: 
+     * 		- answer of the math problem
+     * Pseudocode:
+     *     - ????
+     *     - 
+	 */
 	public void keyTyped(KeyEvent e) {
 		Character key = e.getKeyChar(); // gets the character of a the key-press
 
@@ -129,6 +194,15 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 	}
 
 	@Override
+	/* This method is for taking the codes in a variable 
+	 * Inputs:
+	 * 		- math problems 
+     * Outputs: 
+     * 		- answer of the math problem
+     * Pseudocode:
+     *     - ????
+     *     - 
+	 */
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		String existingText = IOArea.getText();
@@ -152,13 +226,22 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 	}
 
 	@Override
+	/* This method is for taking the codes in a variable
+	 * Inputs:
+	 * 		- math problems 
+     * Outputs: 
+     * 		- answer of the math problem
+     * Pseudocode:
+     *     - ????
+     *     - 
+	 */
 	public void actionPerformed(ActionEvent e) {
 		String existingText = IOArea.getText();
 		
-		if (e.getSource() == btnEquals) { // equals button pressed
+		if (e.getSource() == btnEquals) { 	// equals button pressed
 			if (existingText.length() > 0) {
 				double answer = Calculator.evaluateExpression(existingText);
-				if (answer % 1 == 0) { // if the number is a whole number (decimal is 0)
+				if (answer % 1 == 0) { 		// if the number is a whole number (decimal is 0)
 					String ansString = Integer.toString((int) answer);
 					IOArea.setText(ansString);
 					previousAns = ansString;
@@ -199,13 +282,21 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 	}
 	
 	// Adds a character at a given point in a string.
+	/* Inputs:
+	 * 		- math problems 
+     * Outputs: 
+     * 		- answer of the math problem
+     * Pseudocode:
+     *     - ????
+     *     - 
+	 */
 	public String insertIntoText(String existingText, String insertString, int insertPos) {
 		String newText = new String();
 
-		if (insertPos == existingText.length()) { // if the insert position is at the end of the existing text.
+		if (insertPos == existingText.length()) { 	// if the insert position is at the end of the existing text.
 			newText = existingText + insertString;
 		} else {
-			for (int i = 0; i < existingText.length(); i++) {
+			for (int i = 0; i < existingText.length(); i++) {		// works until "i" is smaller than existing text length 
 				if (i == insertPos) {
 					newText += insertString;
 				}
@@ -218,6 +309,14 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 	}
 
 	// Removes a character from a given point in a string.
+	/* Inputs:
+	 * 		- math problems 
+     * Outputs: 
+     * 		- answer of the math problem
+     * Pseudocode:
+     *     - ????
+     *     - 
+	 */
 	public String removeFromText(String existingText, int removeAt) {
 		if (removeAt == existingText.length()) { // if the caret is at the end of the text
 			existingText = existingText.substring(0, existingText.length() - 1); // removes the last character
@@ -230,6 +329,17 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 	
 	
 	@Override
-	public void keyReleased(KeyEvent e) {} // Unused implementation for the keyReleased method of the KeyListener interface.
+	/* This method is for ???
+	 * Inputs:
+	 * 		- none 
+     * Outputs: 
+     * 		- none
+     * Pseudocode:
+     *     - ????
+     *     - 
+	 */
+	public void keyReleased(KeyEvent e) {
+	} // Unused implementation for the keyReleased method of the KeyListener
+		// interface.
 
 }
