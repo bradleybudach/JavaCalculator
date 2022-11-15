@@ -76,7 +76,7 @@ public class CalculatorButton extends JButton implements MouseListener {
 		hoverColor = new Color(Math.min(color.getRed()+30, 255), Math.min(color.getGreen()+30, 255), Math.min(color.getBlue()+30, 255));
 	}
 	
-	/* This method is for declaring the variables
+	/* This method is for declaring the variables for the column width variable 
 	 * Inputs:
 	 * 		- math problems 
      * Outputs: 
@@ -85,13 +85,8 @@ public class CalculatorButton extends JButton implements MouseListener {
      *     - ????
      *     - 
 	 */
-	public CalculatorButton(int x, int y, int width, Color c, String btnTxt) {
-		super(btnTxt);
-		color = c;
-		xPosition = x;
-		yPosition = y;
+	public void setCustomColumnWidth(int width) {
 		columnWidth = width;
-		hoverColor = new Color(Math.min(color.getRed()+30, 255), Math.min(color.getGreen()+30, 255), Math.min(color.getBlue()+30, 255));
 	}
 	
 	/* This method is for declaring the variables for the column height variable 

@@ -97,9 +97,9 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		btnParenthesisOpen = new CalculatorButton(0, 3, Color.DARK_GRAY, "(");		// Button for pressing ( on the calculator
 		btnParenthesisClose = new CalculatorButton(1, 3, Color.DARK_GRAY, ")");		// Button for pressing ) on the calculator
 		btnEquals = new CalculatorButton(2, 7, new Color(0, 120, 0), "=");			// Button for pressing = on the calculator
-		btnBack = new CalculatorButton(2, 2, 2, new Color(100, 20, 20), "\u232B"); btnBack.setCustomColumnHeight(0.5);		
-		btnClear = new CalculatorButton(0, 2, 2, new Color(100, 20, 20), "C"); btnClear.setCustomColumnHeight(0.5);			// Button for pressing "C" on the calculator
-		btnHistory = new CalculatorButton(0, 0, 4, Color.DARK_GRAY, ""); btnHistory.setCustomFont(historyFont); btnHistory.setCustomColumnHeight(0.5);		// Space for showing the last answer 
+		btnBack = new CalculatorButton(2, 2, new Color(100, 20, 20), "\u232B"); btnBack.setCustomColumnHeight(0.5); btnBack.setCustomColumnWidth(2);
+		btnClear = new CalculatorButton(0, 2, new Color(100, 20, 20), "C"); btnClear.setCustomColumnHeight(0.5);	btnClear.setCustomColumnWidth(2);	// Button for pressing "C" on the calculator
+		btnHistory = new CalculatorButton(0, 0, Color.DARK_GRAY, ""); btnHistory.setCustomFont(historyFont); btnHistory.setCustomColumnHeight(0.5); btnHistory.setCustomColumnWidth(4);	// Space for showing the last answer 
 		IOArea = new JTextField();
 		
 		// adds all buttons to the list of buttons.
