@@ -61,6 +61,9 @@ public class CalculatorButton extends JButton implements MouseListener {
 	private Font font = new Font("DialogInput", Font.PLAIN, 40);		// Variable for font and the type is also selected
 	private static final int prefferedSizeX = 50, prefferedSizeY = 50;
 	private String insertText;
+	protected boolean isInvertable = false;
+	private String inverseInsertText;
+	private String inverseButtonText;
 	
 	/* This method is for declaring the variables
 	 * Inputs:
@@ -79,6 +82,22 @@ public class CalculatorButton extends JButton implements MouseListener {
 		yPosition = y;
 		hoverColor = new Color(Math.min(color.getRed()+30, 255), Math.min(color.getGreen()+30, 255), Math.min(color.getBlue()+30, 255));
 	} 
+	
+	public void setInvertValues(String newButtonText, String newInsertText) {
+		isInvertable = true;
+		inverseButtonText = newButtonText;
+		inverseInsertText = newInsertText;
+	}
+	
+	public void invert() {
+		// Toggles the values that the button displays/holds for insertion:
+		String btnTxt = super.getText(); // stores value before it changes
+		super.setText(inverseButtonText); // changes to new value
+		inverseButtonText = btnTxt; // sets invert value to past value
+		String inv = inverseInsertText; // stores value before it changes
+		inverseInsertText = insertText; // sets inverse insert text value to past value
+		insertText = inv; // sets insert text to new value
+	}
 	
 	/* This method is for declaring the variables for the column width variable 
 	 * Inputs:
@@ -154,10 +173,8 @@ public class CalculatorButton extends JButton implements MouseListener {
 		c.gridy = yPosition;
 		super.setPreferredSize(new Dimension(prefferedSizeX, prefferedSizeY));
 		setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));		// Set border with a gray color and border length = 1
-		if (super.getActionListeners().length == 0) {
-			addActionListener(app);
-			addMouseListener(this);		// Activate the mouse in the app
-		}
+		addActionListener(app);
+		addMouseListener(this);		// Activate the mouse in the app
 		app.add(this, c);
 	}
 	
