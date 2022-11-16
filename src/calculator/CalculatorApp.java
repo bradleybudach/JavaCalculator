@@ -48,11 +48,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CalculatorApp extends JFrame implements ActionListener, KeyListener {
-	// TODO: have history be a drop-down, add CE button.
+	// TODO: have history be a drop-down
 	private CalculatorButton btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnAdd, btnSubtract, btnDivide,
 			btnMultiply, btnMod, btnPow, btnParenthesisOpen, btnParenthesisClose, btnEquals, btnDot, btnBack, btnClear, btnHistory, 
 			btnAbs, btnSin, btnCos, btnTan, btnInvert, btnPI, btnSqrt, btnE, btnLog, btnLN, btnArcsin, btnArccos, btnArctan; // UI buttons
-	// TODO: Add buttons for sin, cos, tan, inverse, pi, sqrt, 
 	private JTextField IOArea; // Input/Output area
 	private String previousAns; // Answer of the last expression.
 
@@ -69,13 +68,12 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		setTitle("Calculator"); // sets title
 		setDefaultCloseOperation(EXIT_ON_CLOSE); // closes program when X button clicked
 		setLayout(new GridBagLayout()); // grid layout with custom rows
-		setSize(700, 900); // sets the default size for the frame	
+		setSize(550, 900); // sets the default size for the frame	
 		getContentPane().setBackground(Color.DARK_GRAY); // Frame background color
 		Image icon = Toolkit.getDefaultToolkit().getImage("C:\\Users\\wb8295nb\\eclipse-workspace\\GroupProject\\src\\logo.png"); // gets the icon image
 		setIconImage(icon); // sets the icon
 		
 		previousAns = ""; // initializes previouAns
-		Font defaultFont = new Font("DialogInput", Font.PLAIN, 40); // default font 
 		Font historyFont = new Font("DialogInput", Font.PLAIN, 20); // Custom font for the History bar
 		Font smallerFont = new Font("DialogInput", Font.PLAIN, 30); // Font for grid items that need to have smaller text.
 		
@@ -93,26 +91,26 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		btnDot = new CalculatorButton(2, 8, Color.BLACK, ".");		// Button for pressing . on the calculator
 		btnAdd = new CalculatorButton(4, 7, Color.DARK_GRAY, "+");	// Button for pressing + on the calculator
 		btnSubtract = new CalculatorButton(4, 6, Color.DARK_GRAY, "-");		// Button for pressing - on the calculator
-		btnDivide = new CalculatorButton(4, 4, Color.DARK_GRAY, "/");		// Button for pressing / on the calculator
-		btnMultiply = new CalculatorButton(4, 5, Color.DARK_GRAY, "*");		// Button for pressing * on the calculator
+		btnDivide = new CalculatorButton(4, 4, Color.DARK_GRAY, "\u00F7"); btnDivide.setInsertText("/");	// Button for pressing / on the calculator
+		btnMultiply = new CalculatorButton(4, 5, Color.DARK_GRAY, "\u00D7"); btnMultiply.setInsertText("*");	// Button for pressing * on the calculator
 		btnMod = new CalculatorButton(3, 4, Color.DARK_GRAY, "%");			// Button for pressing % on the calculator
-		btnPow = new CalculatorButton(4, 3, Color.DARK_GRAY, "^");			// Button for pressing ^ on the calculator
+		btnPow = new CalculatorButton(4, 3, Color.DARK_GRAY, "x\u207F"); btnPow.setInsertText("^"); btnPow.setCustomFont(new Font("", Font.PLAIN, 40)); // Button for pressing ^ on the calculator
 		btnParenthesisOpen = new CalculatorButton(1, 4, Color.DARK_GRAY, "(");		// Button for pressing ( on the calculator
 		btnParenthesisClose = new CalculatorButton(2, 4, Color.DARK_GRAY, ")");		// Button for pressing ) on the calculator
 		btnEquals = new CalculatorButton(3, 8, new Color(0, 120, 0), "="); btnEquals.setCustomColumnWidth(2);			// Button for pressing = on the calculator
 		btnBack = new CalculatorButton(3, 2, new Color(100, 20, 20), "\u232B"); /*btnBack.setCustomColumnHeight(0.5);*/ btnBack.setCustomColumnWidth(2);
 		btnClear = new CalculatorButton(1, 2, new Color(100, 20, 20), "C"); /*btnBack.setCustomColumnHeight(0.5);*/ btnClear.setCustomColumnWidth(2);	// Button for pressing "C" on the calculator
 		btnHistory = new CalculatorButton(0, 0, Color.DARK_GRAY, ""); btnHistory.setCustomFont(historyFont); btnHistory.setCustomColumnHeight(0.5); btnHistory.setCustomColumnWidth(5);	// Space for showing the last answer 
-		btnAbs = new CalculatorButton(0, 2, Color.DARK_GRAY, "|"); 
-		btnInvert = new CalculatorButton(0, 3, Color.DARK_GRAY, "inv"); btnInvert.setCustomFont(smallerFont);
-		btnSin = new CalculatorButton(0, 4, Color.DARK_GRAY, "sin"); btnSin.setCustomFont(smallerFont);
-		btnCos = new CalculatorButton(0, 5, Color.DARK_GRAY, "cos"); btnCos.setCustomFont(smallerFont);
-		btnTan = new CalculatorButton(0, 6, Color.DARK_GRAY, "tan"); btnTan.setCustomFont(smallerFont);
-		btnLog = new CalculatorButton(0, 7, Color.DARK_GRAY, "log"); btnLog.setCustomFont(smallerFont);
-		btnLN = new CalculatorButton(0, 8, Color.DARK_GRAY, "ln"); btnLN.setCustomFont(smallerFont);
+		btnAbs = new CalculatorButton(0, 2, Color.DARK_GRAY, "|");  btnAbs.setInsertText("abs()");
+		btnInvert = new CalculatorButton(0, 3, Color.DARK_GRAY, "inv"); btnInvert.setCustomFont(smallerFont); 
+		btnSin = new CalculatorButton(0, 4, Color.DARK_GRAY, "sin"); btnSin.setCustomFont(smallerFont); btnSin.setInsertText("sin()");
+		btnCos = new CalculatorButton(0, 5, Color.DARK_GRAY, "cos"); btnCos.setCustomFont(smallerFont); btnCos.setInsertText("cos()");
+		btnTan = new CalculatorButton(0, 6, Color.DARK_GRAY, "tan"); btnTan.setCustomFont(smallerFont); btnTan.setInsertText("tan()");
+		btnLog = new CalculatorButton(0, 7, Color.DARK_GRAY, "log"); btnLog.setCustomFont(smallerFont); btnLog.setInsertText("log()");
+		btnLN = new CalculatorButton(0, 8, Color.DARK_GRAY, "ln"); btnLN.setCustomFont(smallerFont); btnLN.setInsertText("ln()");
 		btnE = new CalculatorButton(1, 3, Color.DARK_GRAY, "e");
-		btnPI = new CalculatorButton(2, 3, Color.DARK_GRAY, "pi"); btnPI.setCustomFont(smallerFont);
-		btnSqrt= new CalculatorButton(3, 3, Color.DARK_GRAY, "sqrt"); btnSqrt.setCustomFont(smallerFont);
+		btnPI = new CalculatorButton(2, 3, Color.DARK_GRAY, "\u03C0"); btnPI.setCustomFont(smallerFont); btnPI.setInsertText("pi");
+		btnSqrt= new CalculatorButton(3, 3, Color.DARK_GRAY, "\u221A"); btnSqrt.setCustomFont(smallerFont); btnSqrt.setInsertText("sqrt()");
 		IOArea = new JTextField();
 		
 		// adds all buttons to the list of buttons.
@@ -128,13 +126,13 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 
 		// History button style:
 		btnHistory.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));		//Keep the 
-		btnHistory.setPreferredSize(new Dimension(0, 30));
+		btnHistory.setPreferredSize(new Dimension(0, 25));
 		btnHistory.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		// Input/Output area styles:
 		IOArea.setBackground(Color.BLACK);		// Setting Background color to black
 		IOArea.setForeground(Color.WHITE);		// setting Foreground color to white 
-		IOArea.setFont(defaultFont);			// Setting the font 
+		IOArea.setFont(new Font("DialogInput", Font.PLAIN, 40));			// Setting the font 
 		IOArea.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
 		IOArea.setEditable(false);				// Make the area code unable to edit 
 		IOArea.setCaretColor(Color.WHITE);
@@ -142,7 +140,7 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 
 		GridBagConstraints c = new GridBagConstraints(); // constraints to describe how the item is displayed
 		c.fill = GridBagConstraints.BOTH; c.weightx = 1; c.weighty = 1; c.gridwidth = 5; c.gridx = 0; c.gridy = 1;
-		IOArea.setPreferredSize(new Dimension(0, 75));
+		IOArea.setPreferredSize(new Dimension(0, 70));
 		add(IOArea, c);
 		
 		IOArea.addKeyListener(this); // key listener for the Input/Output Area.
@@ -197,7 +195,7 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		if (Character.isDigit(key) || Character.isAlphabetic(key) || key == '+' || key == '-' || key == '/' || 
 				key == '*' || key == '%' || key == '^' || key == '(' || key == ')' || key == '.' || key == '|') { // key typed that corresponds with the buttons
 			int insertPos = IOArea.getCaretPosition();
-
+			
 			IOArea.setText(insertIntoText(IOArea.getText(), key.toString(), insertPos)); // Inserts the character at the correct position in the text and updates the IOArea text-box.
 			IOArea.setCaretPosition(insertPos + 1); // Updates the caret position to be in the right spot.
 		} else if (key == '=' && !IOArea.getText().equals("")) { // equals key typed
@@ -249,8 +247,9 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 	 */
 	public void actionPerformed(ActionEvent e) {
 		String existingText = IOArea.getText();
+		Object source = e.getSource();
 		
-		if (e.getSource() == btnEquals) { 	// equals button pressed
+		if (source == btnEquals) { 	// equals button pressed
 			if (existingText.length() > 0) {
 				double answer = Calculator.evaluateExpression(existingText);
 				if (answer % 1 == 0) { 		// if the number is a whole number (decimal is 0)
@@ -265,7 +264,7 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 				
 				btnHistory.setText(existingText + " = " + previousAns);
 			}
-		} else if (e.getSource() == btnBack) { // backspace button
+		} else if (source == btnBack) { // backspace button
 			if (existingText.length() > 0) {
 				int removeAt = IOArea.getCaretPosition();
 
@@ -278,18 +277,18 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 					IOArea.setCaretPosition(0);
 				}
 			}
-		} else if (e.getSource() == btnClear) { // clear button
+		} else if (source == btnClear) { // clear button
 			IOArea.setText(""); // clears text
-		} else if (e.getSource() == btnHistory) { // history button
+		} else if (source == btnHistory) { // history button
 			if (previousAns.length() > 0) {
 				IOArea.setText(IOArea.getText() + previousAns); // appends the answer to the I/O text-box
 			}
-		} else { // any other button
-			CalculatorButton btn = (CalculatorButton) e.getSource(); // gets the source of which button is pressed as a CalculatorButton
+		}  else { // any other button
+			CalculatorButton btn = (CalculatorButton) source; // gets the source of which button is pressed as a CalculatorButton
 			int insertPos = IOArea.getCaretPosition();
 
-			IOArea.setText(insertIntoText(IOArea.getText(), btn.getText(), insertPos)); // Inserts the character at the correct position in the text and updates the IOArea text-box.
-			IOArea.setCaretPosition(insertPos + 1); // Updates the caret position to be in the right spot.
+			IOArea.setText(insertIntoText(IOArea.getText(), btn.getInsertText(), insertPos)); // Inserts the character at the correct position in the text and updates the IOArea text-box.
+			IOArea.setCaretPosition(insertPos + btn.getInsertText().length()); // Updates the caret position to be in the right spot.
 		}
 	}
 	

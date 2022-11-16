@@ -59,7 +59,8 @@ public class CalculatorButton extends JButton implements MouseListener {
 	private int columnWidth = 1;		// Variable for the column width of the button which is default to one
 	private double columnHeight = 1;		// Variable for the column height of the button which is default to one
 	private Font font = new Font("DialogInput", Font.PLAIN, 40);		// Variable for font and the type is also selected
-	private int prefferedSizeX = 75, prefferedSizeY = 75;
+	private static final int prefferedSizeX = 50, prefferedSizeY = 50;
+	private String insertText;
 	
 	/* This method is for declaring the variables
 	 * Inputs:
@@ -72,11 +73,12 @@ public class CalculatorButton extends JButton implements MouseListener {
 	 */
 	public CalculatorButton(int x, int y, Color c, String btnTxt) {
 		super(btnTxt);
+		insertText = btnTxt;
 		color = c;
 		xPosition = x;
 		yPosition = y;
 		hoverColor = new Color(Math.min(color.getRed()+30, 255), Math.min(color.getGreen()+30, 255), Math.min(color.getBlue()+30, 255));
-	}
+	} 
 	
 	/* This method is for declaring the variables for the column width variable 
 	 * Inputs:
@@ -117,6 +119,13 @@ public class CalculatorButton extends JButton implements MouseListener {
 		font = f;
 	}
 	
+	public void setInsertText(String text) {
+		insertText = text;
+	}
+	
+	public String getInsertText() {
+		return insertText;
+	}
 
 	/* This method is for displaying the app
 	 * Inputs:
