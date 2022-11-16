@@ -106,7 +106,7 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		btnSin = new CalculatorButton(0, 4, Color.DARK_GRAY, "sin"); btnSin.setCustomFont(smallerFont); btnSin.setInsertText("sin()");
 		btnCos = new CalculatorButton(0, 5, Color.DARK_GRAY, "cos"); btnCos.setCustomFont(smallerFont); btnCos.setInsertText("cos()");
 		btnTan = new CalculatorButton(0, 6, Color.DARK_GRAY, "tan"); btnTan.setCustomFont(smallerFont); btnTan.setInsertText("tan()");
-		btnLog = new CalculatorButton(0, 7, Color.DARK_GRAY, "log"); btnLog.setCustomFont(smallerFont); btnLog.setInsertText("log()");
+		btnLog = new CalculatorButton(0, 7, Color.DARK_GRAY, "log\u2081\u2080"); btnLog.setCustomFont(smallerFont); btnLog.setInsertText("log()");
 		btnLN = new CalculatorButton(0, 8, Color.DARK_GRAY, "ln"); btnLN.setCustomFont(smallerFont); btnLN.setInsertText("ln()");
 		btnE = new CalculatorButton(1, 3, Color.DARK_GRAY, "e");
 		btnPI = new CalculatorButton(2, 3, Color.DARK_GRAY, "\u03C0"); btnPI.setCustomFont(smallerFont); btnPI.setInsertText("pi");
@@ -251,7 +251,7 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		
 		if (source == btnEquals) { 	// equals button pressed
 			if (existingText.length() > 0) {
-				double answer = Calculator.evaluateExpression(existingText);
+				double answer = Calculator.evaluate(existingText);
 				if (answer % 1 == 0) { 		// if the number is a whole number (decimal is 0)
 					String ansString = Integer.toString((int) answer);
 					IOArea.setText(ansString);
