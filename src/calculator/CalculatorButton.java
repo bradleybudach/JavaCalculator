@@ -154,8 +154,10 @@ public class CalculatorButton extends JButton implements MouseListener {
 		c.gridy = yPosition;
 		super.setPreferredSize(new Dimension(prefferedSizeX, prefferedSizeY));
 		setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));		// Set border with a gray color and border length = 1
-		addActionListener(app);
-		addMouseListener(this);						// Activate the mouse in the app
+		if (super.getActionListeners().length == 0) {
+			addActionListener(app);
+			addMouseListener(this);		// Activate the mouse in the app
+		}
 		app.add(this, c);
 	}
 	

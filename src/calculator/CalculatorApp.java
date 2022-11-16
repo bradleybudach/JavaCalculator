@@ -51,9 +51,10 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 	// TODO: have history be a drop-down
 	private CalculatorButton btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnAdd, btnSubtract, btnDivide,
 			btnMultiply, btnMod, btnPow, btnParenthesisOpen, btnParenthesisClose, btnEquals, btnDot, btnBack, btnClear, btnHistory, 
-			btnAbs, btnSin, btnCos, btnTan, btnInvert, btnPI, btnSqrt, btnE, btnLog, btnLN, btnArcsin, btnArccos, btnArctan; // UI buttons
+			btnAbs, btnSin, btnCos, btnTan, btnInvert, btnPI, btnSqrt, btnE, btnLog, btnLN, btnAsin, btnAcos, btnAtan; // UI buttons
 	private JTextField IOArea; // Input/Output area
 	private String previousAns; // Answer of the last expression.
+	private boolean inverted = false;
 
 	/* This method is for building the GUI and activate all the buttons 
 	 * Inputs:
@@ -110,7 +111,10 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		btnLN = new CalculatorButton(0, 8, Color.DARK_GRAY, "ln"); btnLN.setCustomFont(smallerFont); btnLN.setInsertText("ln()");
 		btnE = new CalculatorButton(1, 3, Color.DARK_GRAY, "e");
 		btnPI = new CalculatorButton(2, 3, Color.DARK_GRAY, "\u03C0"); btnPI.setCustomFont(smallerFont); btnPI.setInsertText("pi");
-		btnSqrt= new CalculatorButton(3, 3, Color.DARK_GRAY, "\u221A"); btnSqrt.setCustomFont(smallerFont); btnSqrt.setInsertText("sqrt()");
+		btnSqrt = new CalculatorButton(3, 3, Color.DARK_GRAY, "\u221A"); btnSqrt.setCustomFont(smallerFont); btnSqrt.setInsertText("sqrt()");
+		btnAsin = new CalculatorButton(0, 4, Color.DARK_GRAY, "asin"); btnAsin.setCustomFont(smallerFont); btnAsin.setInsertText("asin()");
+		btnAcos = new CalculatorButton(0, 5, Color.DARK_GRAY, "acos"); btnAcos.setCustomFont(smallerFont); btnAcos.setInsertText("acos()");
+		btnAtan = new CalculatorButton(0, 6, Color.DARK_GRAY, "atan"); btnAtan.setCustomFont(smallerFont); btnAtan.setInsertText("atan()");
 		IOArea = new JTextField();
 		
 		// adds all buttons to the list of buttons.
@@ -283,7 +287,27 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 			if (previousAns.length() > 0) {
 				IOArea.setText(IOArea.getText() + previousAns); // appends the answer to the I/O text-box
 			}
-		}  else { // any other button
+		} else if (source == btnInvert) { 
+			inverted = !inverted;
+			if (inverted) {
+				remove(btnSin);
+				remove(btnCos);
+				remove(btnTan);
+				btnAsin.displaySelf(this);
+				btnAcos.displaySelf(this);
+				btnAtan.displaySelf(this);
+			} else {
+				System.out.println("here");
+				remove(btnAsin);
+				remove(btnAcos);
+				remove(btnAtan);
+				btnSin.displaySelf(this);
+				btnCos.displaySelf(this);
+				btnTan.displaySelf(this);
+			}
+			revalidate();
+			repaint();
+		} else { // any other button
 			CalculatorButton btn = (CalculatorButton) source; // gets the source of which button is pressed as a CalculatorButton
 			int insertPos = IOArea.getCaretPosition();
 

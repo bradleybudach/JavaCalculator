@@ -54,7 +54,7 @@ public final class Calculator {
 		boolean functionFound = false;
 		Stack<String> layeredFunctions = new Stack<String>();
 		Stack<String[]> outsideFunctions = new Stack<String[]>();
-		String[] functions = {"sin", "cos", "tan", "ln", "log", "abs", "sqrt"};
+		String[] functions = {"sin", "cos", "tan", "ln", "log", "abs", "sqrt", "asin", "acos", "atan"};
 		layeredFunctions.push(expression);
 		String outsideFunctionString = ""; 
 		
@@ -127,6 +127,12 @@ public final class Calculator {
 			return Math.abs(insideValue);
 		} else if (function.equals("sqrt")) {
 			return Math.sqrt(insideValue);
+		} else if (function.equals("asin")) {
+			return (double) Math.round(Math.asin(insideValue) * 1000000000) / 1000000000;
+		} else if (function.equals("acos")) {
+			return (double) Math.round(Math.acos(insideValue) * 1000000000) / 1000000000;
+		} else if (function.equals("atan")) {
+			return (double) Math.round(Math.atan(insideValue) * 1000000000) / 1000000000;
 		} else {
 			return 0.0;
 		}
