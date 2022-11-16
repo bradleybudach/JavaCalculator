@@ -54,7 +54,7 @@ public final class Calculator {
 		boolean functionFound = false;
 		Stack<String> layeredFunctions = new Stack<String>();
 		Stack<String[]> outsideFunctions = new Stack<String[]>();
-		String[] functions = {"sin", "cos", "tan", "ln", "log", "abs"};
+		String[] functions = {"sin", "cos", "tan", "ln", "log", "abs", "sqrt"};
 		layeredFunctions.push(expression);
 		String outsideFunctionString = ""; 
 		
@@ -73,8 +73,24 @@ public final class Calculator {
 			}
 			
 			if (!firstOccuringFunction.isEmpty()) {
+				
+				// Find the positions of the brackets in order to find the inside of the function.
 				int startPosition = smallestIndex;
-				int endPosition = currentExpression.lastIndexOf(")");
+				int endPosition = 0;
+				int closingBracketsRequired = 0;
+				for (int i = startPosition+outsideFunctionString.length()+1; i < currentExpression.length(); i++) {
+					Character currentChar = currentExpression.charAt(i);
+					if (currentChar == '(') {
+						closingBracketsRequired++;
+					} else if (currentChar == ')') {
+						if (closingBracketsRequired == 0) {
+							endPosition = i;
+							break;
+						}
+						closingBracketsRequired--;
+					}
+				}
+				
 				String[] outsideFunctionData = {outsideFunctionString, Integer.toString(startPosition), Integer.toString(endPosition)};
 				String evalString = currentExpression.substring(startPosition+firstOccuringFunction.length()+1, endPosition);
 				functionFound = true;
@@ -109,6 +125,8 @@ public final class Calculator {
 			return (double) Math.round(Math.log10(insideValue) * 1000000000) / 1000000000;
 		} else if (function.equals("abs")) {
 			return Math.abs(insideValue);
+		} else if (function.equals("sqrt")) {
+			return Math.sqrt(insideValue);
 		} else {
 			return 0.0;
 		}

@@ -101,7 +101,7 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		btnBack = new CalculatorButton(3, 2, new Color(100, 20, 20), "\u232B"); /*btnBack.setCustomColumnHeight(0.5);*/ btnBack.setCustomColumnWidth(2);
 		btnClear = new CalculatorButton(1, 2, new Color(100, 20, 20), "C"); /*btnBack.setCustomColumnHeight(0.5);*/ btnClear.setCustomColumnWidth(2);	// Button for pressing "C" on the calculator
 		btnHistory = new CalculatorButton(0, 0, Color.DARK_GRAY, ""); btnHistory.setCustomFont(historyFont); btnHistory.setCustomColumnHeight(0.5); btnHistory.setCustomColumnWidth(5);	// Space for showing the last answer 
-		btnAbs = new CalculatorButton(0, 2, Color.DARK_GRAY, "|");  btnAbs.setInsertText("abs()");
+		btnAbs = new CalculatorButton(0, 2, Color.DARK_GRAY, "abs");  btnAbs.setInsertText("abs()"); btnAbs.setCustomFont(smallerFont);
 		btnInvert = new CalculatorButton(0, 3, Color.DARK_GRAY, "inv"); btnInvert.setCustomFont(smallerFont); 
 		btnSin = new CalculatorButton(0, 4, Color.DARK_GRAY, "sin"); btnSin.setCustomFont(smallerFont); btnSin.setInsertText("sin()");
 		btnCos = new CalculatorButton(0, 5, Color.DARK_GRAY, "cos"); btnCos.setCustomFont(smallerFont); btnCos.setInsertText("cos()");
