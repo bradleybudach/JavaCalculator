@@ -34,7 +34,9 @@
  *     Step 3: 
  */
 package calculator;
+import java.util.Arrays;
 import java.util.Stack;
+import java.util.Vector;
 
 public final class Calculator {
 
@@ -49,99 +51,74 @@ public final class Calculator {
      *     - 
 	 */
 	public static Double evaluate(String expression) {
-		// Replace constants with their values:
-		expression = expression.replaceAll("e", "(2.7182818284590452353602874713527)");
-		expression = expression.replaceAll("pi", "(3.1415926535897932384626433832795)");
-		
-		//TODO: Known issue, recursive functions will not work. All special characters need to be escaped too.
 		boolean functionFound = false;
+		Stack<String> layeredFunctions = new Stack<String>();
+		Stack<String[]> outsideFunctions = new Stack<String[]>();
+		String[] functions = {"sin", "cos", "tan", "ln", "log", "abs"};
+		layeredFunctions.push(expression);
+		String outsideFunctionString = ""; 
+		
 		do {
+			String currentExpression = layeredFunctions.peek();
 			
-			int sinPosition = expression.indexOf("sin(");
-			int cosPosition = expression.indexOf("cos(");
-			int tanPosition = expression.indexOf("tan(");
-			int lnPosition = expression.indexOf("ln(");
-			int logPosition = expression.indexOf("log(");
-			int absPosition = expression.indexOf("abs(");
-			
-			if (sinPosition >= 0) {
-				functionFound = true;
-				int endPosition = expression.indexOf(")", sinPosition+4);
-				String evalString = expression.substring(sinPosition+4, endPosition);
-				String fullFunction = expression.substring(sinPosition, endPosition+1);
-				fullFunction = fullFunction.replace("(", "\\(");
-				fullFunction = fullFunction.replace(")", "\\)");
-				System.out.println(evalString);
-				System.out.println(fullFunction);
-				Double answer = Math.sin(solveExpression(evalString));
-				expression = expression.replaceAll(fullFunction, Double.toString(answer));
-			} else if (cosPosition >= 0) {
-				functionFound = true;
-				int endPosition = expression.indexOf(")", cosPosition+4);
-				String evalString = expression.substring(cosPosition+4, endPosition);
-				String fullFunction = expression.substring(cosPosition, endPosition+1);
-				fullFunction = fullFunction.replace("(", "\\(");
-				fullFunction = fullFunction.replace(")", "\\)");
-				System.out.println(evalString);
-				System.out.println(fullFunction);
-				Double answer = Math.cos(solveExpression(evalString));
-				expression = expression.replaceAll(fullFunction, Double.toString(answer));
-			} else if (tanPosition >= 0) {
-				functionFound = true;
-				int endPosition = expression.indexOf(")", tanPosition+4);
-				String evalString = expression.substring(tanPosition+4, endPosition);
-				String fullFunction = expression.substring(tanPosition, endPosition+1);
-				fullFunction = fullFunction.replace("(", "\\(");
-				fullFunction = fullFunction.replace(")", "\\)");
-				System.out.println(evalString);
-				System.out.println(fullFunction);
-				Double answer = Math.tan(solveExpression(evalString));
-				expression = expression.replaceAll(fullFunction, Double.toString(answer));
-			} else if (lnPosition >= 0) {
-				functionFound = true;
-				int endPosition = expression.indexOf(")", lnPosition+3);
-				String evalString = expression.substring(lnPosition+3, endPosition);
-				String fullFunction = expression.substring(lnPosition, endPosition+1);
-				fullFunction = fullFunction.replace("(", "\\(");
-				fullFunction = fullFunction.replace(")", "\\)");
-				System.out.println(evalString);
-				System.out.println(fullFunction);
-				Double answer = Math.log(solveExpression(evalString));
-				expression = expression.replaceAll(fullFunction, Double.toString(answer));
-			} else if (logPosition >= 0) {
-				functionFound = true;
-				int endPosition = expression.indexOf(")", logPosition+4);
-				String evalString = expression.substring(logPosition+4, endPosition);
-				String fullFunction = expression.substring(logPosition, endPosition+1);
-				fullFunction = fullFunction.replace("(", "\\(");
-				fullFunction = fullFunction.replace(")", "\\)");
-				System.out.println(evalString);
-				System.out.println(fullFunction);
-				Double answer = Math.log10(solveExpression(evalString));
-				expression = expression.replaceAll(fullFunction, Double.toString(answer));
-			} else if (absPosition >= 0) {
-				functionFound = true;
-				int endPosition = expression.indexOf(")", absPosition+4);
-				String evalString = expression.substring(absPosition+4, endPosition);
-				String fullFunction = expression.substring(absPosition, endPosition+1);
-				fullFunction = fullFunction.replace("(", "\\(");
-				fullFunction = fullFunction.replace(")", "\\)");
-				System.out.println(evalString);
-				System.out.println(fullFunction);
-				Double answer = Math.abs(solveExpression(evalString));
-				expression = expression.replaceAll(fullFunction, Double.toString(answer));
+			String firstOccuringFunction = "";
+			int smallestIndex = currentExpression.length();
+			for (String function : functions) {
+				int index = currentExpression.indexOf(function);
+				if (index >= 0 && index < smallestIndex) {
+					smallestIndex = index;
+					outsideFunctionString = function;
+					firstOccuringFunction = function;
+				}
 			}
 			
-			else {
-				functionFound = false;
+			if (!firstOccuringFunction.isEmpty()) {
+				int startPosition = smallestIndex;
+				int endPosition = currentExpression.lastIndexOf(")");
+				String[] outsideFunctionData = {outsideFunctionString, Integer.toString(startPosition), Integer.toString(endPosition)};
+				String evalString = currentExpression.substring(startPosition+firstOccuringFunction.length()+1, endPosition);
+				functionFound = true;
+				layeredFunctions.push(evalString);
+				outsideFunctions.push(outsideFunctionData);
+			} else {
+				if (layeredFunctions.size() > 1) {
+					String[] outsideFunctionData = outsideFunctions.pop();
+					Double answer = solveFunction(outsideFunctionData[0], solveExpression(layeredFunctions.pop())); // solves the expression
+					String outsideExpression = layeredFunctions.pop();
+					outsideExpression = outsideExpression.substring(0, Integer.parseInt(outsideFunctionData[1])) + answer + outsideExpression.substring(Integer.parseInt(outsideFunctionData[2])+1);
+					layeredFunctions.push(outsideExpression);
+				} else {
+					functionFound = false;
+				}
 			}
 		} while (functionFound);
 		
-		return solveExpression(expression);
-		
+		return solveExpression(layeredFunctions.pop()); // solves the last layer, after all functions have been performed
+	}
+	
+	public static Double solveFunction(String function, Double insideValue) {
+		if (function.equals("sin")) {
+			return (double) Math.round(Math.sin(insideValue) * 1000000000) / 1000000000;
+		} else if (function.equals("cos")) {
+			return (double) Math.round(Math.cos(insideValue) * 1000000000) / 1000000000;
+		} else if (function.equals("tan")) {
+			return (double) Math.round(Math.tan(insideValue) * 1000000000) / 1000000000;
+		} else if (function.equals("ln")) {
+			return (double) Math.round(Math.log(insideValue) * 1000000000) / 1000000000;
+		} else if (function.equals("log")) {
+			return (double) Math.round(Math.log10(insideValue) * 1000000000) / 1000000000;
+		} else if (function.equals("abs")) {
+			return Math.abs(insideValue);
+		} else {
+			return 0.0;
+		}
 	}
 	
 	public static Double solveExpression(String expression) {
+		// Replace constants with their values:
+		expression = expression.replaceAll("e", "(" + Math.E + ")");
+		expression = expression.replaceAll("pi", "(" + Math.PI + ")");
+		
 		char[] tokens = expression.toCharArray(); 	// Converts the expression into an array of characters.
 		
 		Stack<Double> numbers = new Stack<Double>(); 	// Creates a stack to hold a queue of numbers
