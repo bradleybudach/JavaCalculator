@@ -194,17 +194,14 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 	public void keyTyped(KeyEvent e) {
 		Character key = e.getKeyChar(); // gets the character of a the key-press
 
-		if (key == '1' || key == '2' || key == '3' || key == '4' || key == '5' || key == '6' || key == '7' || key == '8'
-				|| key == '9' || key == '0' || key == '+' || key == '-' || key == '/' || key == '*' || key == '%'
-				|| key == '^' || key == '(' || key == ')' || key == '.') { // key typed that corresponds with the buttons
+		if (Character.isDigit(key) || Character.isAlphabetic(key) || key == '+' || key == '-' || key == '/' || 
+				key == '*' || key == '%' || key == '^' || key == '(' || key == ')' || key == '.' || key == '|') { // key typed that corresponds with the buttons
 			int insertPos = IOArea.getCaretPosition();
 
 			IOArea.setText(insertIntoText(IOArea.getText(), key.toString(), insertPos)); // Inserts the character at the correct position in the text and updates the IOArea text-box.
 			IOArea.setCaretPosition(insertPos + 1); // Updates the caret position to be in the right spot.
 		} else if (key == '=' && !IOArea.getText().equals("")) { // equals key typed
 			btnEquals.doClick(); // clicks the equals button to get the answer
-		} else if (key == 'h') { // h clicks history button
-			btnHistory.doClick();
 		}
 	}
 
