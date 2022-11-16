@@ -50,7 +50,9 @@ import java.util.Arrays;
 public class CalculatorApp extends JFrame implements ActionListener, KeyListener {
 	// TODO: have history be a drop-down, add CE button.
 	private CalculatorButton btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnAdd, btnSubtract, btnDivide,
-			btnMultiply, btnMod, btnPow, btnParenthesisOpen, btnParenthesisClose, btnEquals, btnDot, btnBack, btnClear, btnHistory; // UI buttons
+			btnMultiply, btnMod, btnPow, btnParenthesisOpen, btnParenthesisClose, btnEquals, btnDot, btnBack, btnClear, btnHistory, 
+			btnAbs, btnSin, btnCos, btnTan, btnInvert, btnPI, btnSqrt, btnE, btnLog, btnLN, btnArcsin, btnArccos, btnArctan; // UI buttons
+	// TODO: Add buttons for sin, cos, tan, inverse, pi, sqrt, 
 	private JTextField IOArea; // Input/Output area
 	private String previousAns; // Answer of the last expression.
 
@@ -67,7 +69,7 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		setTitle("Calculator"); // sets title
 		setDefaultCloseOperation(EXIT_ON_CLOSE); // closes program when X button clicked
 		setLayout(new GridBagLayout()); // grid layout with custom rows
-		setSize(450, 800); // sets the default size for the frame	
+		setSize(700, 900); // sets the default size for the frame	
 		getContentPane().setBackground(Color.DARK_GRAY); // Frame background color
 		Image icon = Toolkit.getDefaultToolkit().getImage("C:\\Users\\wb8295nb\\eclipse-workspace\\GroupProject\\src\\logo.png"); // gets the icon image
 		setIconImage(icon); // sets the icon
@@ -75,37 +77,49 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		previousAns = ""; // initializes previouAns
 		Font defaultFont = new Font("DialogInput", Font.PLAIN, 40); // default font 
 		Font historyFont = new Font("DialogInput", Font.PLAIN, 20); // Custom font for the History bar
-
+		Font smallerFont = new Font("DialogInput", Font.PLAIN, 30); // Font for grid items that need to have smaller text.
+		
 		// Initializes components:
-		btn1 = new CalculatorButton(0, 4, Color.BLACK, "1");	// Button for pressing 1 on the calculator
-		btn2 = new CalculatorButton(1, 4, Color.BLACK, "2");	// Button for pressing 2 on the calculator
-		btn3 = new CalculatorButton(2, 4, Color.BLACK, "3");	// Button for pressing 3 on the calculator
-		btn4 = new CalculatorButton(0, 5, Color.BLACK, "4");	// Button for pressing 4 on the calculator
-		btn5 = new CalculatorButton(1, 5, Color.BLACK, "5");	// Button for pressing 5 on the calculator
-		btn6 = new CalculatorButton(2, 5, Color.BLACK, "6");	// Button for pressing 6 on the calculator
-		btn7 = new CalculatorButton(0, 6, Color.BLACK, "7");	// Button for pressing 7 on the calculator
-		btn8 = new CalculatorButton(1, 6, Color.BLACK, "8");	// Button for pressing 8 on the calculator
-		btn9 = new CalculatorButton(2, 6, Color.BLACK, "9");	// Button for pressing 9 on the calculator
-		btn0 = new CalculatorButton(0, 7, Color.BLACK, "0");	// Button for pressing 0 on the calculator
-		btnDot = new CalculatorButton(1, 7, Color.BLACK, ".");		// Button for pressing . on the calculator
-		btnAdd = new CalculatorButton(3, 3, Color.DARK_GRAY, "+");	// Button for pressing + on the calculator
-		btnSubtract = new CalculatorButton(3, 4, Color.DARK_GRAY, "-");		// Button for pressing - on the calculator
-		btnDivide = new CalculatorButton(3, 5, Color.DARK_GRAY, "/");		// Button for pressing / on the calculator
-		btnMultiply = new CalculatorButton(3, 6, Color.DARK_GRAY, "*");		// Button for pressing * on the calculator
-		btnMod = new CalculatorButton(2, 3, Color.DARK_GRAY, "%");			// Button for pressing % on the calculator
-		btnPow = new CalculatorButton(3, 7, Color.DARK_GRAY, "^");			// Button for pressing ^ on the calculator
-		btnParenthesisOpen = new CalculatorButton(0, 3, Color.DARK_GRAY, "(");		// Button for pressing ( on the calculator
-		btnParenthesisClose = new CalculatorButton(1, 3, Color.DARK_GRAY, ")");		// Button for pressing ) on the calculator
-		btnEquals = new CalculatorButton(2, 7, new Color(0, 120, 0), "=");			// Button for pressing = on the calculator
-		btnBack = new CalculatorButton(2, 2, new Color(100, 20, 20), "\u232B"); btnBack.setCustomColumnHeight(0.5); btnBack.setCustomColumnWidth(2);
-		btnClear = new CalculatorButton(0, 2, new Color(100, 20, 20), "C"); btnClear.setCustomColumnHeight(0.5);	btnClear.setCustomColumnWidth(2);	// Button for pressing "C" on the calculator
-		btnHistory = new CalculatorButton(0, 0, Color.DARK_GRAY, ""); btnHistory.setCustomFont(historyFont); btnHistory.setCustomColumnHeight(0.5); btnHistory.setCustomColumnWidth(4);	// Space for showing the last answer 
+		btn1 = new CalculatorButton(1, 7, Color.BLACK, "1");	// Button for pressing 1 on the calculator
+		btn2 = new CalculatorButton(2, 7, Color.BLACK, "2");	// Button for pressing 2 on the calculator
+		btn3 = new CalculatorButton(3, 7, Color.BLACK, "3");	// Button for pressing 3 on the calculator
+		btn4 = new CalculatorButton(1, 6, Color.BLACK, "4");	// Button for pressing 4 on the calculator
+		btn5 = new CalculatorButton(2, 6, Color.BLACK, "5");	// Button for pressing 5 on the calculator
+		btn6 = new CalculatorButton(3, 6, Color.BLACK, "6");	// Button for pressing 6 on the calculator
+		btn7 = new CalculatorButton(1, 5, Color.BLACK, "7");	// Button for pressing 7 on the calculator
+		btn8 = new CalculatorButton(2, 5, Color.BLACK, "8");	// Button for pressing 8 on the calculator
+		btn9 = new CalculatorButton(3, 5, Color.BLACK, "9");	// Button for pressing 9 on the calculator
+		btn0 = new CalculatorButton(1, 8, Color.BLACK, "0");	// Button for pressing 0 on the calculator
+		btnDot = new CalculatorButton(2, 8, Color.BLACK, ".");		// Button for pressing . on the calculator
+		btnAdd = new CalculatorButton(4, 7, Color.DARK_GRAY, "+");	// Button for pressing + on the calculator
+		btnSubtract = new CalculatorButton(4, 6, Color.DARK_GRAY, "-");		// Button for pressing - on the calculator
+		btnDivide = new CalculatorButton(4, 4, Color.DARK_GRAY, "/");		// Button for pressing / on the calculator
+		btnMultiply = new CalculatorButton(4, 5, Color.DARK_GRAY, "*");		// Button for pressing * on the calculator
+		btnMod = new CalculatorButton(3, 4, Color.DARK_GRAY, "%");			// Button for pressing % on the calculator
+		btnPow = new CalculatorButton(4, 3, Color.DARK_GRAY, "^");			// Button for pressing ^ on the calculator
+		btnParenthesisOpen = new CalculatorButton(1, 4, Color.DARK_GRAY, "(");		// Button for pressing ( on the calculator
+		btnParenthesisClose = new CalculatorButton(2, 4, Color.DARK_GRAY, ")");		// Button for pressing ) on the calculator
+		btnEquals = new CalculatorButton(3, 8, new Color(0, 120, 0), "="); btnEquals.setCustomColumnWidth(2);			// Button for pressing = on the calculator
+		btnBack = new CalculatorButton(3, 2, new Color(100, 20, 20), "\u232B"); /*btnBack.setCustomColumnHeight(0.5);*/ btnBack.setCustomColumnWidth(2);
+		btnClear = new CalculatorButton(1, 2, new Color(100, 20, 20), "C"); /*btnBack.setCustomColumnHeight(0.5);*/ btnClear.setCustomColumnWidth(2);	// Button for pressing "C" on the calculator
+		btnHistory = new CalculatorButton(0, 0, Color.DARK_GRAY, ""); btnHistory.setCustomFont(historyFont); btnHistory.setCustomColumnHeight(0.5); btnHistory.setCustomColumnWidth(5);	// Space for showing the last answer 
+		btnAbs = new CalculatorButton(0, 2, Color.DARK_GRAY, "|"); 
+		btnInvert = new CalculatorButton(0, 3, Color.DARK_GRAY, "inv"); btnInvert.setCustomFont(smallerFont);
+		btnSin = new CalculatorButton(0, 4, Color.DARK_GRAY, "sin"); btnSin.setCustomFont(smallerFont);
+		btnCos = new CalculatorButton(0, 5, Color.DARK_GRAY, "cos"); btnCos.setCustomFont(smallerFont);
+		btnTan = new CalculatorButton(0, 6, Color.DARK_GRAY, "tan"); btnTan.setCustomFont(smallerFont);
+		btnLog = new CalculatorButton(0, 7, Color.DARK_GRAY, "log"); btnLog.setCustomFont(smallerFont);
+		btnLN = new CalculatorButton(0, 8, Color.DARK_GRAY, "ln"); btnLN.setCustomFont(smallerFont);
+		btnE = new CalculatorButton(1, 3, Color.DARK_GRAY, "e");
+		btnPI = new CalculatorButton(2, 3, Color.DARK_GRAY, "pi"); btnPI.setCustomFont(smallerFont);
+		btnSqrt= new CalculatorButton(3, 3, Color.DARK_GRAY, "sqrt"); btnSqrt.setCustomFont(smallerFont);
 		IOArea = new JTextField();
 		
 		// adds all buttons to the list of buttons.
 		ArrayList<CalculatorButton> buttons = new ArrayList<CalculatorButton>(
 				Arrays.asList(btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnDot, btnAdd, btnSubtract,
-						btnDivide, btnMultiply, btnMod, btnPow, btnParenthesisOpen, btnParenthesisClose, btnEquals, btnBack, btnClear, btnHistory));
+						btnDivide, btnMultiply, btnMod, btnPow, btnParenthesisOpen, btnParenthesisClose, btnEquals, btnBack, 
+						btnClear, btnHistory, btnAbs, btnSin, btnCos, btnTan, btnInvert, btnPI, btnSqrt, btnE, btnLog, btnLN));
 
 		// Sets Styles:
 		for (CalculatorButton btn : buttons) {
@@ -114,7 +128,7 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 
 		// History button style:
 		btnHistory.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));		//Keep the 
-		btnHistory.setPreferredSize(new Dimension(0, 20));
+		btnHistory.setPreferredSize(new Dimension(0, 30));
 		btnHistory.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		// Input/Output area styles:
@@ -127,7 +141,8 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		IOArea.getCaret().setVisible(true);		// Make it visible to the user 
 
 		GridBagConstraints c = new GridBagConstraints(); // constraints to describe how the item is displayed
-		c.fill = GridBagConstraints.BOTH; c.weightx = 1; c.weighty = 1; c.gridwidth = 4; c.gridx = 0; c.gridy = 1;
+		c.fill = GridBagConstraints.BOTH; c.weightx = 1; c.weighty = 1; c.gridwidth = 5; c.gridx = 0; c.gridy = 1;
+		IOArea.setPreferredSize(new Dimension(0, 75));
 		add(IOArea, c);
 		
 		IOArea.addKeyListener(this); // key listener for the Input/Output Area.

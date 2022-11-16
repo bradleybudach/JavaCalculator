@@ -1,4 +1,3 @@
-
 /*
  * Class name: CS 234(Group Project)
  * Author:Bradly Budach, Pronob Kumar

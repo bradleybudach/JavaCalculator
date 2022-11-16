@@ -45,6 +45,7 @@ package calculator;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.event.MouseEvent;
@@ -58,6 +59,7 @@ public class CalculatorButton extends JButton implements MouseListener {
 	private int columnWidth = 1;		// Variable for the column width of the button which is default to one
 	private double columnHeight = 1;		// Variable for the column height of the button which is default to one
 	private Font font = new Font("DialogInput", Font.PLAIN, 40);		// Variable for font and the type is also selected
+	private int prefferedSizeX = 75, prefferedSizeY = 75;
 	
 	/* This method is for declaring the variables
 	 * Inputs:
@@ -141,6 +143,7 @@ public class CalculatorButton extends JButton implements MouseListener {
 		c.weighty = columnHeight;
 		c.gridx = xPosition;
 		c.gridy = yPosition;
+		super.setPreferredSize(new Dimension(prefferedSizeX, prefferedSizeY));
 		setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));		// Set border with a gray color and border length = 1
 		addActionListener(app);
 		addMouseListener(this);						// Activate the mouse in the app
