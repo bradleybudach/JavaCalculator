@@ -76,17 +76,22 @@ public final class Calculator {
 				int startPosition = smallestIndex;
 				int endPosition = -1;
 				int closingBracketsRequired = 0;
-				for (int i = startPosition+outsideFunctionString.length()+1; i < currentExpression.length(); i++) {
-					Character currentChar = currentExpression.charAt(i);
-					if (currentChar == '(') {
-						closingBracketsRequired++;
-					} else if (currentChar == ')') {
-						if (closingBracketsRequired == 0) {
-							endPosition = i;
-							break;
+				
+				if (currentExpression.charAt(startPosition+outsideFunctionString.length()) == '(') {
+					for (int i = startPosition+outsideFunctionString.length()+1; i < currentExpression.length(); i++) {
+						Character currentChar = currentExpression.charAt(i);
+						if (currentChar == '(') {
+							closingBracketsRequired++;
+						} else if (currentChar == ')') {
+							if (closingBracketsRequired == 0) {
+								endPosition = i;
+								break;
+							}
+							closingBracketsRequired--;
 						}
-						closingBracketsRequired--;
 					}
+				} else {
+					throw new IllegalArgumentException("Invalid Function");
 				}
 				
 				if (endPosition >= 0) {
@@ -103,7 +108,7 @@ public final class Calculator {
 					String[] outsideFunctionData = outsideFunctions.pop();
 					Double answer = solveFunction(outsideFunctionData[0], solveExpression(layeredFunctions.pop())); // solves the expression
 					String outsideExpression = layeredFunctions.pop();
-					outsideExpression = outsideExpression.substring(0, Integer.parseInt(outsideFunctionData[1])) + answer + outsideExpression.substring(Integer.parseInt(outsideFunctionData[2])+1);
+					outsideExpression = outsideExpression.substring(0, Integer.parseInt(outsideFunctionData[1])) + "(" + answer + ")" + outsideExpression.substring(Integer.parseInt(outsideFunctionData[2])+1);
 					layeredFunctions.push(outsideExpression);
 				} else {
 					functionFound = false;
@@ -144,6 +149,11 @@ public final class Calculator {
 		// Replace constants with their values:
 		expression = expression.replaceAll("e", "(" + Math.E + ")");
 		expression = expression.replaceAll("pi", "(" + Math.PI + ")");
+		
+		//If parenthesis or numbers are next to eachother, add a * symbol. ex: 2(10) = 2*10. (3)(2) = (3)*(2). (1)3 = (1)*3.
+		expression = expression.replaceAll("\\)\\(", "*"); // if there is a ")(" add a *
+		expression = expression.replaceAll("(?<=\\d)\\(", "*("); // if there is a "number(" add a *
+		expression = expression.replaceAll("\\)(?=\\d)", ")*"); // if there is a ")number" add a *
 		
 		char[] tokens = expression.toCharArray(); 	// Converts the expression into an array of characters.
 		
@@ -188,14 +198,6 @@ public final class Calculator {
 				}
 				operators.push(currentToken);
 			} else if (currentToken == '(') {
-				if ((i-1) >= 0 && (Character.isDigit(tokens[i-1]) || tokens[i-1] == ')')) { 	// if there is a previous digit and it was a number or parenthesis, add multiplication to the operators. 10(3+5) = 10*(3+5) or (10)(3+5) = 10*(3+5)
-					while (!operators.empty() && hasPrecedence(operators.peek(), '*')) { 	// checks order of operations before it adds the *
-						numbers.push(getResult(operators.pop(), numbers.pop(), numbers.pop())); 	// Finds the result of the operation on the last two numbers 
-					}
-					
-					operators.push('*'); 	// if parenthesis are next to each other that means multiply
-				}
-				
 				operators.push(currentToken);
 			} else if (currentToken == ')') {
 				try {
@@ -212,11 +214,11 @@ public final class Calculator {
 			}
 		}
 		
-		try {
-			while (!operators.empty()) {
-				numbers.push(getResult(operators.pop(), numbers.pop(), numbers.pop()));
-			}
+		while (!operators.empty()) {
+			numbers.push(getResult(operators.pop(), numbers.pop(), numbers.pop()));
+		}
 			
+		try {
 			return numbers.pop();
 		} catch (Exception e) { // Invalid Input
 			throw new IllegalArgumentException("Invalid Input");

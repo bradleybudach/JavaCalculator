@@ -39,7 +39,6 @@
  *     Step 3: 
  */
 
-
 package calculator;
 
 import javax.swing.BorderFactory;
@@ -60,6 +59,7 @@ public class CalculatorButton extends JButton implements MouseListener {
 	private double columnHeight = 1;		// Variable for the column height of the button which is default to one
 	private Font font = new Font("DialogInput", Font.PLAIN, 40);		// Variable for font and the type is also selected
 	private static final int prefferedSizeX = 50, prefferedSizeY = 50;
+	protected boolean isFunction = false; // if the button is used for a function 
 	private String insertText;
 	protected boolean isInvertable = false;
 	private String inverseInsertText;
@@ -75,18 +75,18 @@ public class CalculatorButton extends JButton implements MouseListener {
      *     - 
 	 */
 	public CalculatorButton(int x, int y, Color c, String btnTxt) {
-		super(btnTxt);
-		insertText = btnTxt;
-		color = c;
-		xPosition = x;
-		yPosition = y;
-		hoverColor = new Color(Math.min(color.getRed()+30, 255), Math.min(color.getGreen()+30, 255), Math.min(color.getBlue()+30, 255));
-	} 
+		super(btnTxt); // creates the JButton
+		insertText = btnTxt; // text that will appear in the IOArea when the button is clicked
+		color = c; // sets color
+		xPosition = x; // sets X position in grid
+		yPosition = y; // sets Y position in grid
+		hoverColor = new Color(Math.min(color.getRed()+30, 255), Math.min(color.getGreen()+30, 255), Math.min(color.getBlue()+30, 255)); // Procedurally finds a brighter color that will show when the button is hovered over.
+	}
 	
 	public void setInvertValues(String newButtonText, String newInsertText) {
-		isInvertable = true;
-		inverseButtonText = newButtonText;
-		inverseInsertText = newInsertText;
+		isInvertable = true; // sets the button to switch when the invert button is clicked
+		inverseButtonText = newButtonText; // sets the text that the button will display upon inversion
+		inverseInsertText = newInsertText; // sets the text for the button to print to the console on inversion
 	}
 	
 	public void invert() {
@@ -94,9 +94,9 @@ public class CalculatorButton extends JButton implements MouseListener {
 		String btnTxt = super.getText(); // stores value before it changes
 		super.setText(inverseButtonText); // changes to new value
 		inverseButtonText = btnTxt; // sets invert value to past value
-		String inv = inverseInsertText; // stores value before it changes
+		String invTxt = inverseInsertText; // stores value before it changes
 		inverseInsertText = insertText; // sets inverse insert text value to past value
-		insertText = inv; // sets insert text to new value
+		insertText = invTxt; // sets insert text to new value
 	}
 	
 	/* This method is for declaring the variables for the column width variable 
@@ -188,9 +188,7 @@ public class CalculatorButton extends JButton implements MouseListener {
      *     - ????
      *     - 
 	 */
-    public void mouseEntered(MouseEvent e)
-    {
-        
+    public void mouseEntered(MouseEvent e) {
         setBackground(hoverColor);
     }
 
@@ -204,12 +202,12 @@ public class CalculatorButton extends JButton implements MouseListener {
      *     - ????
      *     - 
 	 */
-	public void mouseExited(MouseEvent e){
+	public void mouseExited(MouseEvent e) {
 	     setBackground(color);
 	}
 	
 	@Override
-	/* This method is for 		??????	
+	/* These methods are  		??????	
 	 * Inputs:
 	 * 		- none
      * Outputs: 
@@ -218,35 +216,7 @@ public class CalculatorButton extends JButton implements MouseListener {
      *     - ????
      *     - 
 	 */
-	public void mouseClicked(MouseEvent e){
-		
-	}
-
-    @Override
-    /* This method is for 		??????	
-	 * Inputs:
-	 * 		- none
-     * Outputs: 
-     * 		- none
-     * Pseudocode:
-     *     - ????
-     *     - 
-	 */
-    public void mousePressed(MouseEvent e){
-    	
-    }
-
-    @Override
-    /* This method is for 		??????	
-	 * Inputs:
-	 * 		- none
-     * Outputs: 
-     * 		- none
-     * Pseudocode:
-     *     - ????
-     *     - 
-	 */
-    public void mouseReleased(MouseEvent e){
-    	
-    }
+	public void mouseClicked(MouseEvent e){}
+    public void mousePressed(MouseEvent e){}
+    public void mouseReleased(MouseEvent e){}
 }

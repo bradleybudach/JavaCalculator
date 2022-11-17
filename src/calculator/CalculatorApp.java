@@ -39,8 +39,8 @@
 
 
 package calculator;
-
 //import java.util.Scanner; console support
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -48,7 +48,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CalculatorApp extends JFrame implements ActionListener, KeyListener {
-	// TODO: have history be a drop-down
+	// TODO: have history be a drop-down, ANS button separate from history
 	private CalculatorButton btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnAdd, btnSubtract, btnDivide,
 			btnMultiply, btnMod, btnPow, btnParenthesisOpen, btnParenthesisClose, btnEquals, btnDot, btnBack, btnClear, btnHistory, 
 			btnAbs, btnSin, btnCos, btnTan, btnInvert, btnPI, btnSqrt, btnE, btnLog, btnLN; // UI buttons
@@ -102,16 +102,16 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		btnBack = new CalculatorButton(3, 2, new Color(100, 20, 20), "\u232B"); /*btnBack.setCustomColumnHeight(0.5);*/ btnBack.setCustomColumnWidth(2);
 		btnClear = new CalculatorButton(1, 2, new Color(100, 20, 20), "C"); /*btnBack.setCustomColumnHeight(0.5);*/ btnClear.setCustomColumnWidth(2);	// Button for pressing "C" on the calculator
 		btnHistory = new CalculatorButton(0, 0, Color.DARK_GRAY, ""); btnHistory.setCustomFont(historyFont); btnHistory.setCustomColumnHeight(0.5); btnHistory.setCustomColumnWidth(5);	// Space for showing the last answer 
-		btnAbs = new CalculatorButton(0, 2, Color.DARK_GRAY, "abs");  btnAbs.setInsertText("abs()"); btnAbs.setCustomFont(smallerFont);
+		btnAbs = new CalculatorButton(0, 2, Color.DARK_GRAY, "abs");  btnAbs.setInsertText("abs()"); btnAbs.setCustomFont(smallerFont); btnAbs.isFunction = true;
 		btnInvert = new CalculatorButton(0, 3, Color.DARK_GRAY, "inv"); btnInvert.setCustomFont(smallerFont); 
-		btnSin = new CalculatorButton(0, 4, Color.DARK_GRAY, "sin"); btnSin.setCustomFont(smallerFont); btnSin.setInsertText("sin()"); btnSin.setInvertValues("asin", "asin()");
-		btnCos = new CalculatorButton(0, 5, Color.DARK_GRAY, "cos"); btnCos.setCustomFont(smallerFont); btnCos.setInsertText("cos()"); btnCos.setInvertValues("acos", "acos()");
-		btnTan = new CalculatorButton(0, 6, Color.DARK_GRAY, "tan"); btnTan.setCustomFont(smallerFont); btnTan.setInsertText("tan()"); btnTan.setInvertValues("atan", "atan()");
-		btnLog = new CalculatorButton(0, 7, Color.DARK_GRAY, "log\u2081\u2080"); btnLog.setCustomFont(smallerFont); btnLog.setInsertText("log()");
-		btnLN = new CalculatorButton(0, 8, Color.DARK_GRAY, "ln"); btnLN.setCustomFont(smallerFont); btnLN.setInsertText("ln()");
+		btnSin = new CalculatorButton(0, 4, Color.DARK_GRAY, "sin"); btnSin.setCustomFont(smallerFont); btnSin.setInsertText("sin()"); btnSin.setInvertValues("asin", "asin()"); btnSin.isFunction = true;
+		btnCos = new CalculatorButton(0, 5, Color.DARK_GRAY, "cos"); btnCos.setCustomFont(smallerFont); btnCos.setInsertText("cos()"); btnCos.setInvertValues("acos", "acos()"); btnCos.isFunction = true;
+		btnTan = new CalculatorButton(0, 6, Color.DARK_GRAY, "tan"); btnTan.setCustomFont(smallerFont); btnTan.setInsertText("tan()"); btnTan.setInvertValues("atan", "atan()"); btnTan.isFunction = true;
+		btnLog = new CalculatorButton(0, 7, Color.DARK_GRAY, "log\u2081\u2080"); btnLog.setCustomFont(smallerFont); btnLog.setInsertText("log()"); btnLog.isFunction = true;
+		btnLN = new CalculatorButton(0, 8, Color.DARK_GRAY, "ln"); btnLN.setCustomFont(smallerFont); btnLN.setInsertText("ln()"); btnLN.isFunction = true;
 		btnE = new CalculatorButton(1, 3, Color.DARK_GRAY, "e");
 		btnPI = new CalculatorButton(2, 3, Color.DARK_GRAY, "\u03C0"); btnPI.setCustomFont(smallerFont); btnPI.setInsertText("pi");
-		btnSqrt = new CalculatorButton(3, 3, Color.DARK_GRAY, "\u221A"); btnSqrt.setCustomFont(smallerFont); btnSqrt.setInsertText("sqrt()");
+		btnSqrt = new CalculatorButton(3, 3, Color.DARK_GRAY, "\u221A"); btnSqrt.setCustomFont(smallerFont); btnSqrt.setInsertText("sqrt()"); btnSqrt.isFunction = true;
 		IOArea = new JTextField();
 
 		// adds all buttons to the list of buttons.
@@ -153,13 +153,6 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		});
 	}
 
-//	Console App Support:
-//	public String readInputFromConsole() {
-//		Scanner in = new Scanner(System.in);
-//		System.out.print("Enter epxression: ");
-//		return in.nextLine();
-//	}
-
 	/* This method is the main method 
 	 * Inputs:
 	 * 		- math problems 
@@ -169,15 +162,9 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
      *     - set the app visible
 	 */
 	public static void main(String[] args) {
+		// Creates instance of the GUI:
 		CalculatorApp app = new CalculatorApp();
 		app.setVisible(true);
-
-		// Console app support:
-		// while (true) {
-		// String input = app.readInputFromConsole();
-		// System.out.println("The answer is: " + Calculator.evaluateExpression(input) +
-		// "\n");
-		// }
 	}
 
 	@Override
@@ -193,8 +180,8 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 	public void keyTyped(KeyEvent e) {
 		Character key = e.getKeyChar(); // gets the character of a the key-press
 
-		if (Character.isDigit(key) || Character.isAlphabetic(key) || key == '+' || key == '-' || key == '/' || 
-				key == '*' || key == '%' || key == '^' || key == '(' || key == ')' || key == '.' || key == '|') { // key typed that corresponds with the buttons
+		if (Character.isDigit(key) || Character.isLetter(key) || key == '+' || key == '-' || key == '/' || 
+				key == '*' || key == '%' || key == '^' || key == '(' || key == ')' || key == '.') { // key typed that corresponds with the buttons
 			int insertPos = IOArea.getCaretPosition();
 			
 			IOArea.setText(insertIntoText(IOArea.getText(), key.toString(), insertPos)); // Inserts the character at the correct position in the text and updates the IOArea text-box.
@@ -287,8 +274,9 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		} else if (source == btnClear) { // clear button
 			IOArea.setText(""); // clears text
 		} else if (source == btnHistory) { // history button
+			int insertPos = IOArea.getCaretPosition();
 			if (previousAns.length() > 0) {
-				IOArea.setText(IOArea.getText() + previousAns); // appends the answer to the I/O text-box
+				IOArea.setText(insertIntoText(IOArea.getText(), previousAns, insertPos)); // inserts the last answer into the text
 			}
 		} else if (source == btnInvert) { 
 			for (CalculatorButton button : buttons) {
@@ -297,13 +285,16 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 				}
 			}
 			revalidate();
-			repaint();
 		} else { // any other button
 			CalculatorButton btn = (CalculatorButton) source; // gets the source of which button is pressed as a CalculatorButton
 			int insertPos = IOArea.getCaretPosition();
 
 			IOArea.setText(insertIntoText(IOArea.getText(), btn.getInsertText(), insertPos)); // Inserts the character at the correct position in the text and updates the IOArea text-box.
-			IOArea.setCaretPosition(insertPos + btn.getInsertText().length()); // Updates the caret position to be in the right spot.
+			if (btn.isFunction) {
+				IOArea.setCaretPosition(insertPos + btn.getInsertText().length()-1); // Updates the caret position to be in the right spot. Inside the Parenthesis for functions.
+			} else {
+				IOArea.setCaretPosition(insertPos + btn.getInsertText().length()); // Updates the caret position to be in the right spot.
+			}
 		}
 	}
 	
@@ -355,17 +346,7 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 	
 	
 	@Override
-	/* This method is for ???
-	 * Inputs:
-	 * 		- none 
-     * Outputs: 
-     * 		- none
-     * Pseudocode:
-     *     - ????
-     *     - 
-	 */
-	public void keyReleased(KeyEvent e) {
-	} // Unused implementation for the keyReleased method of the KeyListener
-		// interface.
+	// Unused implementation for the keyReleased method of the KeyListener interface.
+	public void keyReleased(KeyEvent e) {} 
 
 }
