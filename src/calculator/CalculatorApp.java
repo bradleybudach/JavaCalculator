@@ -55,7 +55,6 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 	ArrayList<CalculatorButton> buttons;
 	private JTextField IOArea; // Input/Output area
 	private String previousAns; // Answer of the last expression.
-	private boolean inverted = false;
 
 	/* This method is for building the GUI and activate all the buttons 
 	 * Inputs:
@@ -253,15 +252,21 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		
 		if (source == btnEquals) { 	// equals button pressed
 			if (existingText.length() > 0) {
-				double answer = Calculator.evaluate(existingText);
-				if (answer % 1 == 0) { 		// if the number is a whole number (decimal is 0)
-					String ansString = Integer.toString((int) answer);
-					IOArea.setText(ansString);
-					previousAns = ansString;
-				} else {
-					String ansString = Double.toString(answer);
-					IOArea.setText(ansString);
-					previousAns = ansString;
+				try {
+					double answer = Calculator.evaluate(existingText);
+					if (answer % 1 == 0) { 		// if the number is a whole number (decimal is 0)
+						String ansString = Integer.toString((int) answer);
+						IOArea.setText(ansString);
+						previousAns = ansString;
+					} else {
+						String ansString = Double.toString(answer);
+						IOArea.setText(ansString);
+						previousAns = ansString;
+					}
+				} catch (IllegalArgumentException ex) {
+					IOArea.setText(ex.getMessage());
+				} catch (ArithmeticException ex) {
+					IOArea.setText(ex.getMessage());
 				}
 				
 				btnHistory.setText(existingText + " = " + previousAns);

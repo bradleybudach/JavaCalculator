@@ -34,9 +34,7 @@
  *     Step 3: 
  */
 package calculator;
-import java.util.Arrays;
 import java.util.Stack;
-import java.util.Vector;
 
 public final class Calculator {
 
@@ -76,7 +74,7 @@ public final class Calculator {
 				
 				// Find the positions of the brackets in order to find the inside of the function.
 				int startPosition = smallestIndex;
-				int endPosition = 0;
+				int endPosition = -1;
 				int closingBracketsRequired = 0;
 				for (int i = startPosition+outsideFunctionString.length()+1; i < currentExpression.length(); i++) {
 					Character currentChar = currentExpression.charAt(i);
@@ -91,11 +89,15 @@ public final class Calculator {
 					}
 				}
 				
-				String[] outsideFunctionData = {outsideFunctionString, Integer.toString(startPosition), Integer.toString(endPosition)};
-				String evalString = currentExpression.substring(startPosition+firstOccuringFunction.length()+1, endPosition);
-				functionFound = true;
-				layeredFunctions.push(evalString);
-				outsideFunctions.push(outsideFunctionData);
+				if (endPosition >= 0) {
+					String[] outsideFunctionData = {outsideFunctionString, Integer.toString(startPosition), Integer.toString(endPosition)};
+					String evalString = currentExpression.substring(startPosition+firstOccuringFunction.length()+1, endPosition);
+					functionFound = true;
+					layeredFunctions.push(evalString);
+					outsideFunctions.push(outsideFunctionData);
+				} else {
+					throw new IllegalArgumentException("Function Missing Parenthesis");
+				}
 			} else {
 				if (layeredFunctions.size() > 1) {
 					String[] outsideFunctionData = outsideFunctions.pop();
@@ -196,25 +198,29 @@ public final class Calculator {
 				
 				operators.push(currentToken);
 			} else if (currentToken == ')') {
-				while (operators.peek() != '(') { 	// completes everything between the parenthesis if there is an expression inside.
-					numbers.push(getResult(operators.pop(), numbers.pop(), numbers.pop()));
+				try {
+					while (operators.peek() != '(') { 	// completes everything between the parenthesis if there is an expression inside.
+						numbers.push(getResult(operators.pop(), numbers.pop(), numbers.pop()));
+					}
+					
+					operators.pop(); // removes the remaining parentheses.
+				} catch (Exception e) { // if it doesn't find a closing parenthesis
+					throw new IllegalArgumentException("Missing Opening Parenthesis");
 				}
-				
-				operators.pop(); // removes the remaining parentheses.
-			} else {
-				// TODO: Error message of some sort
+			} else { // Invalid Input
+				throw new IllegalArgumentException("Invalid Characters in Input");
 			}
-//			System.out.println(numbers);
-//			System.out.println(operators);
 		}
 		
-		while (!operators.empty()) {
-			numbers.push(getResult(operators.pop(), numbers.pop(), numbers.pop()));
-//			System.out.println(numbers);
-//			System.out.println(operators);
+		try {
+			while (!operators.empty()) {
+				numbers.push(getResult(operators.pop(), numbers.pop(), numbers.pop()));
+			}
+			
+			return numbers.pop();
+		} catch (Exception e) { // Invalid Input
+			throw new IllegalArgumentException("Invalid Input");
 		}
-		
-		return numbers.pop();
 	}
 
 	/*
@@ -277,8 +283,7 @@ public final class Calculator {
 			if (b != 0) {
 				return a / b;
 			} else { 		// Error : As any number can't be divide by 0
-				System.out.println("Error: Can not divide number by 0");
-				return 0.0;
+				throw new ArithmeticException("Can't divide by 0");
 			}
 		} else if (operator == '%') {		// Use of math operator "%"
 			return a % b;
@@ -289,8 +294,7 @@ public final class Calculator {
 		} else if (operator == '^') {		// Use of math operator "^"
 			return Math.pow(a, b);
 		} else {
-			System.out.print("Invalid Operator");
-			return 0.0; 	// Error
+			throw new IllegalArgumentException("Invalid Input");
 		}
 	}
 }
