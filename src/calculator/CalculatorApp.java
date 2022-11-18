@@ -94,15 +94,15 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		btnDivide = new CalculatorButton(4, 4, Color.DARK_GRAY, "\u00F7"); btnDivide.setInsertText("/");	// Button for pressing / on the calculator
 		btnMultiply = new CalculatorButton(4, 5, Color.DARK_GRAY, "\u00D7"); btnMultiply.setInsertText("*");	// Button for pressing * on the calculator
 		btnMod = new CalculatorButton(3, 4, Color.DARK_GRAY, "%");			// Button for pressing % on the calculator
-		btnPow = new CalculatorButton(4, 3, Color.DARK_GRAY, "x\u207F"); btnPow.setInsertText("^"); btnPow.setCustomFont(new Font("", Font.PLAIN, 40)); // Button for pressing ^ on the calculator
+		btnPow = new CalculatorButton(4, 3, Color.DARK_GRAY, "x\u00B2"); btnPow.setInsertText("^2"); btnPow.setCustomFont(new Font("", Font.PLAIN, 40)); btnPow.setInvertValues("x\u207F", "^");  // Button for pressing ^ on the calculator
 		btnParenthesisOpen = new CalculatorButton(1, 4, Color.DARK_GRAY, "(");		// Button for pressing ( on the calculator
 		btnParenthesisClose = new CalculatorButton(2, 4, Color.DARK_GRAY, ")");		// Button for pressing ) on the calculator
 		btnEquals = new CalculatorButton(3, 8, new Color(0, 120, 0), "="); btnEquals.setCustomWidth(2); // Button for pressing = on the calculator
-		btnBack = new CalculatorButton(3, 2, new Color(100, 20, 20), "\u232B"); /*btnBack.setCustomColumnHeight(0.5);*/ btnBack.setCustomWidth(2);
-		btnClear = new CalculatorButton(1, 2, new Color(100, 20, 20), "C"); /*btnBack.setCustomColumnHeight(0.5);*/ btnClear.setCustomWidth(2);	// Button for pressing "C" on the calculator
+		btnBack = new CalculatorButton(3, 2, new Color(100, 20, 20), "\u232B"); btnBack.setCustomColumnHeight(0.65); btnBack.setCustomWidth(2);
+		btnClear = new CalculatorButton(1, 2, new Color(100, 20, 20), "C"); btnClear.setCustomColumnHeight(0.65); btnClear.setCustomWidth(2);	// Button for pressing "C" on the calculator
 		btnHistory = new CalculatorButton(0, 0, Color.DARK_GRAY, ""); btnHistory.setCustomFont(historyFont); btnHistory.setCustomColumnHeight(0.5); btnHistory.setCustomWidth(5);	// Space for showing the last answer 
-		btnAbs = new CalculatorButton(0, 2, Color.DARK_GRAY, "abs");  btnAbs.setInsertText("abs()"); btnAbs.setCustomFont(smallerFont); btnAbs.isFunction = true;
-		btnInvert = new CalculatorButton(0, 3, Color.DARK_GRAY, "inv"); btnInvert.setCustomFont(smallerFont); 
+		btnAbs = new CalculatorButton(0, 3, Color.DARK_GRAY, "|x|");  btnAbs.setInsertText("abs()"); btnAbs.setCustomFont(smallerFont); btnAbs.isFunction = true;
+		btnInvert = new CalculatorButton(0, 2, new Color(0, 0, 120), "inv"); btnInvert.setCustomFont(smallerFont); btnInvert.setCustomColumnHeight(0.65);
 		btnSin = new CalculatorButton(0, 4, Color.DARK_GRAY, "sin"); btnSin.setCustomFont(smallerFont); btnSin.setInsertText("sin()"); btnSin.setInvertValues("asin", "asin()"); btnSin.isFunction = true;
 		btnCos = new CalculatorButton(0, 5, Color.DARK_GRAY, "cos"); btnCos.setCustomFont(smallerFont); btnCos.setInsertText("cos()"); btnCos.setInvertValues("acos", "acos()"); btnCos.isFunction = true;
 		btnTan = new CalculatorButton(0, 6, Color.DARK_GRAY, "tan"); btnTan.setCustomFont(smallerFont); btnTan.setInsertText("tan()"); btnTan.setInvertValues("atan", "atan()"); btnTan.isFunction = true;
@@ -132,7 +132,7 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		// Input/Output area styles:
 		IOArea.setBackground(Color.BLACK);		// Setting Background color to black
 		IOArea.setForeground(Color.WHITE);		// setting Foreground color to white 
-		IOArea.setFont(new Font("DialogInput", Font.PLAIN, 40)); // Setting the font 
+		IOArea.setFont(new Font("DialogInput", Font.PLAIN, 35)); // Setting the font 
 		IOArea.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
 		IOArea.setEditable(false);				// Make the area code unable to edit 
 		IOArea.setCaretColor(Color.WHITE);		

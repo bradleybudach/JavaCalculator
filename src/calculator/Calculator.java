@@ -134,7 +134,9 @@ public final class Calculator {
 	}
 	
 	public static Double solveFunction(String function, String paramater, Double insideValue) {
-		paramater = Double.toString(solveExpression(paramater)); // Replaces constants/evaluates paramater in case it is something like a fraction
+		if (!paramater.isEmpty()) {
+			paramater = Double.toString(solveExpression(paramater)); // Replaces constants/evaluates paramater in case it is something like a fraction
+		}
 		
 		if (function.equals("sin")) { // Sine Function
 			if (paramater.isEmpty()) { // normal sin
