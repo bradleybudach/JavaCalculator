@@ -1,6 +1,6 @@
 /*
  * Class name: CS 234(Group Project)
- * Author:Bradly Budach, Pronob Kumar
+ * Author: Bradly Budach, Pronob Kumar
  * Date: 11/07/2022
  * Problem: 
  * 		- Make a calculator
@@ -34,7 +34,9 @@
  *     Step 3: 
  */
 package calculator;
+
 import java.util.Stack;
+import java.util.EmptyStackException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -132,9 +134,7 @@ public final class Calculator {
 	}
 	
 	public static Double solveFunction(String function, String paramater, Double insideValue) {
-		// Replace constants with their values:
-		paramater = paramater.replaceAll("e", Double.toString(Math.E));
-		paramater = paramater.replaceAll("pi", Double.toString(Math.PI ));
+		paramater = Double.toString(solveExpression(paramater)); // Replaces constants/evaluates paramater in case it is something like a fraction
 		
 		if (function.equals("sin")) { // Sine Function
 			if (paramater.isEmpty()) { // normal sin
@@ -262,15 +262,17 @@ public final class Calculator {
 	
 	public static Double solveExpression(String expression) {
 		
+		// Expression Sanatization:
 		// Replace constants with their values:
 		expression = expression.replaceAll("e", "(" + Math.E + ")");
 		expression = expression.replaceAll("pi", "(" + Math.PI + ")");
 		
+		// Sanatize Expression to work in the algorithm below:
 		expression = expression.replaceAll("(?<![\\d\\)])\\-(?=\\()", "-1"); // If there is a - before a parenthesis and it is not used for subtracting two numbers, turn it into a -1. ex. -(-10) = -1*(-19) or  (-(-(12))) = (-1*(-1*(12)))
-		//If parenthesis or numbers are next to eachother, add a * symbol. ex: 2(10) = 2*10. (3)(2) = (3)*(2). (1)3 = (1)*3:
 		expression = expression.replaceAll("\\)\\(", ")*("); // if there is a ")(" add a *
 		expression = expression.replaceAll("(?<=\\d)\\(", "*("); // if there is a "number(" add a *
 		expression = expression.replaceAll("\\)(?=\\d)", ")*"); // if there is a ")number" add a *
+		
 		
 		char[] tokens = expression.toCharArray(); 	// Converts the expression into an array of characters.
 		
@@ -279,19 +281,19 @@ public final class Calculator {
 		Stack<Character> operators = new Stack<Character>(); 	// Creates a stack to hold a queue of numbers
 		
 		for (int i = 0; i < tokens.length; i++) {
-			char currentToken = tokens[i];
+			char currentToken = tokens[i]; // character of the current token
 			
-			if (Character.isDigit(currentToken)) { 		// If the current character is a number. 
-				String number = "" + currentToken;
+			if (Character.isDigit(currentToken)) { // If the current character is a number. 
+				String number = "" + currentToken; // stores the full number
 				
 				// Checks to see if a number is being subtracted from another number or is a negative number
 				if ((i-1) >= 0 && tokens[i-1] == '-') {
-					if ((i-1) == 0) { 	// If a - sign is the first symbol then it is a negative number not subraction
-						number = "-" + number; 		// Prepends the negative sign on a number
-						operators.pop(); 		// Removes the - from operators as it is now part of a number
-					} else if (!Character.isDigit(tokens[i-2]) && tokens[i-2] != ')') {		 // If the character before the - symbol is not a number or close parenthesis that means the number is negative, otherwise it will stay as subtraction
-						number = "-" + number;	 // prepends the negative sign on a number
-						operators.pop(); 	// Removes the - from operators as it is now part of a number
+					if ((i-1) == 0) { // If a - sign is the first symbol then it is a negative number not subraction
+						number = "-" + number; // Prepends the negative sign on a number
+						operators.pop(); // Removes the - from operators as it is now part of a number
+					} else if (!Character.isDigit(tokens[i-2]) && tokens[i-2] != ')') {	// If the character before the - symbol is not a number or close parenthesis that means the number is negative, otherwise it will stay as subtraction
+						number = "-" + number; // prepends the negative sign on a number
+						operators.pop(); // Removes the - from operators as it is now part of a number
 					}
 				}
 				
@@ -301,23 +303,23 @@ public final class Calculator {
 					number += tokens[i];
 				}
 				
-				currentToken = tokens[i]; 		// Need to update the current token as i may have changed in the while loop.
-				numbers.push(Double.parseDouble(number)); 		// Add the number to the numbers stack.
-			} else if (currentToken == '+' || currentToken == '-' || currentToken == '*' || currentToken == '/' || currentToken == '%' || currentToken == '^') { 		// if the current token is a character
-				if (currentToken == '-' && i > 0 && (tokens[i-1] == '+' || tokens[i-1] == '-' || tokens[i-1] == '*' || tokens[i-1] == '/' || tokens[i-1] == '%' || tokens[i-1] == '^')) { 		// if there is a - sign next to another sign.
+				currentToken = tokens[i]; // Need to update the current token as i may have changed in the while loop.
+				numbers.push(Double.parseDouble(number)); // Add the number to the numbers stack.
+			} else if (currentToken == '+' || currentToken == '-' || currentToken == '*' || currentToken == '/' || currentToken == '%' || currentToken == '^') { // if the current token is a character
+				if (currentToken == '-' && i > 0 && (tokens[i-1] == '+' || tokens[i-1] == '-' || tokens[i-1] == '*' || tokens[i-1] == '/' || tokens[i-1] == '%' || tokens[i-1] == '^')) { // if there is a - sign next to another sign.
 					operators.push(currentToken);
-					continue; 		// skips the current loop if there is a negative next to another operator as that means the number is negative.
+					continue; // skips the current loop if there is a negative next to another operator as that means the number is negative.
 				}
 				
 				while (!operators.empty() && hasPrecedence(operators.peek(), currentToken)) {
-					numbers.push(getResult(operators.pop(), numbers.pop(), numbers.pop())); 	// Finds the result of the operation on the last two numbers 
+					numbers.push(getResult(operators.pop(), numbers.pop(), numbers.pop())); // Finds the result of the operation on the last two numbers 
 				}
 				operators.push(currentToken);
 			} else if (currentToken == '(') {
 				operators.push(currentToken);
 			} else if (currentToken == ')') {
 				try {
-					while (operators.peek() != '(') { 	// completes everything between the parenthesis if there is an expression inside.
+					while (operators.peek() != '(') { // completes everything between the parenthesis if there is an expression inside.
 						numbers.push(getResult(operators.pop(), numbers.pop(), numbers.pop()));
 					}
 					
@@ -336,7 +338,7 @@ public final class Calculator {
 			}
 	
 			return numbers.pop();
-		} catch (Exception e) { // Invalid Input
+		} catch (EmptyStackException e) {
 			throw new IllegalArgumentException("Invalid Input");
 		}
 	}
@@ -395,24 +397,24 @@ public final class Calculator {
 	 */
 	private static double getResult(char operator, double b, double a) {
 		
-		if (operator == '*') {				// Use of math operator "*"
+		if (operator == '*') { // Use of math operator "*"
 			return a * b;
-		} else if (operator == '/') {		// Use of math operator "/"
+		} else if (operator == '/') { // Use of math operator "/"
 			if (b != 0) {
 				return a / b;
-			} else { 		// Error : As any number can't be divide by 0
+			} else { // Error : As any number can't be divide by 0
 				throw new ArithmeticException("Can't divide by 0");
 			}
-		} else if (operator == '%') {		// Use of math operator "%"
+		} else if (operator == '%') { // Use of math operator "%"
 			return a % b;
-		} else if (operator == '+') {		// Use of math operator "+"
+		} else if (operator == '+') { // Use of math operator "+"
 			return a + b;
-		} else if (operator == '-') {		// Use of math operator "-"
+		} else if (operator == '-') { // Use of math operator "-"
 			return a - b;
-		} else if (operator == '^') {		// Use of math operator "^"
+		} else if (operator == '^') { // Use of math operator "^"
 			return (double) Math.round(Math.pow(a, b) * 1000000000) / 1000000000;
 		} else {
-			throw new IllegalArgumentException("Invalid Input");
+			throw new UnsupportedOperationException("Unexpected Error: operator given does not match possible operators");
 		}
 	}
 }
