@@ -223,7 +223,7 @@ public final class Calculator {
 			if (!paramater.isEmpty()) {
 				try { // nth root where n = paramater
 					Double root = Double.parseDouble(paramater);
-					return Math.pow(insideValue, (1/root));
+					return (double) Math.round(Math.pow(insideValue, (1/root)) * 1000000000) / 1000000000;
 				} catch (Exception e) { // root is not a number
 					throw new IllegalArgumentException("root Paramater Must Be a Number");
 				}
@@ -266,11 +266,11 @@ public final class Calculator {
 		expression = expression.replaceAll("e", "(" + Math.E + ")");
 		expression = expression.replaceAll("pi", "(" + Math.PI + ")");
 		
-		//If parenthesis or numbers are next to eachother, add a * symbol. ex: 2(10) = 2*10. (3)(2) = (3)*(2). (1)3 = (1)*3.
-		expression = expression.replaceAll("\\)\\(", "*"); // if there is a ")(" add a *
+		expression = expression.replaceAll("(?<![\\d\\)])\\-(?=\\()", "-1"); // If there is a - before a parenthesis and it is not used for subtracting two numbers, turn it into a -1. ex. -(-10) = -1*(-19) or  (-(-(12))) = (-1*(-1*(12)))
+		//If parenthesis or numbers are next to eachother, add a * symbol. ex: 2(10) = 2*10. (3)(2) = (3)*(2). (1)3 = (1)*3:
+		expression = expression.replaceAll("\\)\\(", ")*("); // if there is a ")(" add a *
 		expression = expression.replaceAll("(?<=\\d)\\(", "*("); // if there is a "number(" add a *
 		expression = expression.replaceAll("\\)(?=\\d)", ")*"); // if there is a ")number" add a *
-		
 		
 		char[] tokens = expression.toCharArray(); 	// Converts the expression into an array of characters.
 		
@@ -330,11 +330,11 @@ public final class Calculator {
 			}
 		}
 		
-		while (!operators.empty()) {
-			numbers.push(getResult(operators.pop(), numbers.pop(), numbers.pop()));
-		}
-			
 		try {
+			while (!operators.empty()) {
+				numbers.push(getResult(operators.pop(), numbers.pop(), numbers.pop()));
+			}
+	
 			return numbers.pop();
 		} catch (Exception e) { // Invalid Input
 			throw new IllegalArgumentException("Invalid Input");
