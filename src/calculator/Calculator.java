@@ -35,6 +35,8 @@
  */
 package calculator;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class Calculator {
 
@@ -52,7 +54,7 @@ public final class Calculator {
 		boolean functionFound = false;
 		Stack<String> layeredFunctions = new Stack<String>();
 		Stack<String[]> outsideFunctions = new Stack<String[]>();
-		String[] functions = {"sin", "cos", "tan", "ln", "log", "abs", "sqrt", "asin", "acos", "atan"};
+		String[] functions = {"sin", "cos", "tan", "ln", "log", "abs", "sqrt", "asin", "acos", "atan", "root"};
 		layeredFunctions.push(expression);
 		String outsideFunctionString = ""; 
 		
@@ -76,9 +78,19 @@ public final class Calculator {
 				int startPosition = smallestIndex;
 				int endPosition = -1;
 				int closingBracketsRequired = 0;
+				String functionParamater = ""; // stores parameter of function if one is found
 				
-				if (currentExpression.charAt(startPosition+outsideFunctionString.length()) == '(') {
-					for (int i = startPosition+outsideFunctionString.length()+1; i < currentExpression.length(); i++) {
+				if (currentExpression.charAt(startPosition+outsideFunctionString.length()) == '(' || currentExpression.matches(".*" + outsideFunctionString + ".*\\(.*")) { // if the function has valid syntax either with no paramater or with paramater.
+					Pattern pattern = Pattern.compile("(?<=" + outsideFunctionString + ")[^(]+"); // regex that finds any characters after the function but before the (
+					Matcher matcher = pattern.matcher(currentExpression);
+					if (matcher.find()) {
+						String match = matcher.group(0); // stores paramater of the function
+						if (currentExpression.indexOf(outsideFunctionString+match)+outsideFunctionString.length() == startPosition+outsideFunctionString.length()) { // ensures the match is in the same spot as the firstOccuringFunction, prevents errors with it matching a paramater with the same name and different paramater that is further in the expression 
+							functionParamater = match;
+						}
+					} 
+					
+					for (int i = startPosition+outsideFunctionString.length()+functionParamater.length()+1; i < currentExpression.length(); i++) {
 						Character currentChar = currentExpression.charAt(i);
 						if (currentChar == '(') {
 							closingBracketsRequired++;
@@ -94,9 +106,9 @@ public final class Calculator {
 					throw new IllegalArgumentException("Invalid Function");
 				}
 				
-				if (endPosition >= 0) {
-					String[] outsideFunctionData = {outsideFunctionString, Integer.toString(startPosition), Integer.toString(endPosition)};
-					String evalString = currentExpression.substring(startPosition+firstOccuringFunction.length()+1, endPosition);
+				if (endPosition >= 0) { // if ending parenthesis is found
+					String[] outsideFunctionData = {outsideFunctionString, functionParamater, Integer.toString(startPosition), Integer.toString(endPosition)};
+					String evalString = currentExpression.substring(startPosition+firstOccuringFunction.length()+functionParamater.length()+1, endPosition);
 					functionFound = true;
 					layeredFunctions.push(evalString);
 					outsideFunctions.push(outsideFunctionData);
@@ -106,9 +118,9 @@ public final class Calculator {
 			} else {
 				if (layeredFunctions.size() > 1) {
 					String[] outsideFunctionData = outsideFunctions.pop();
-					Double answer = solveFunction(outsideFunctionData[0], solveExpression(layeredFunctions.pop())); // solves the expression
+					Double answer = solveFunction(outsideFunctionData[0], outsideFunctionData[1], solveExpression(layeredFunctions.pop())); // solves the expression inside the function and the function itself
 					String outsideExpression = layeredFunctions.pop();
-					outsideExpression = outsideExpression.substring(0, Integer.parseInt(outsideFunctionData[1])) + "(" + answer + ")" + outsideExpression.substring(Integer.parseInt(outsideFunctionData[2])+1);
+					outsideExpression = outsideExpression.substring(0, Integer.parseInt(outsideFunctionData[2])) + "(" + answer + ")" + outsideExpression.substring(Integer.parseInt(outsideFunctionData[3])+1);
 					layeredFunctions.push(outsideExpression);
 				} else {
 					functionFound = false;
@@ -119,33 +131,137 @@ public final class Calculator {
 		return solveExpression(layeredFunctions.pop()); // solves the last layer, after all functions have been performed
 	}
 	
-	public static Double solveFunction(String function, Double insideValue) {
-		if (function.equals("sin")) {
-			return (double) Math.round(Math.sin(insideValue) * 1000000000) / 1000000000;
-		} else if (function.equals("cos")) {
-			return (double) Math.round(Math.cos(insideValue) * 1000000000) / 1000000000;
-		} else if (function.equals("tan")) {
-			return (double) Math.round(Math.tan(insideValue) * 1000000000) / 1000000000;
-		} else if (function.equals("ln")) {
-			return (double) Math.round(Math.log(insideValue) * 1000000000) / 1000000000;
-		} else if (function.equals("log")) {
-			return (double) Math.round(Math.log10(insideValue) * 1000000000) / 1000000000;
-		} else if (function.equals("abs")) {
-			return Math.abs(insideValue);
-		} else if (function.equals("sqrt")) {
-			return Math.sqrt(insideValue);
-		} else if (function.equals("asin")) {
-			return (double) Math.round(Math.asin(insideValue) * 1000000000) / 1000000000;
-		} else if (function.equals("acos")) {
-			return (double) Math.round(Math.acos(insideValue) * 1000000000) / 1000000000;
-		} else if (function.equals("atan")) {
-			return (double) Math.round(Math.atan(insideValue) * 1000000000) / 1000000000;
-		} else {
-			return 0.0;
+	public static Double solveFunction(String function, String paramater, Double insideValue) {
+		// Replace constants with their values:
+		paramater = paramater.replaceAll("e", Double.toString(Math.E));
+		paramater = paramater.replaceAll("pi", Double.toString(Math.PI ));
+		
+		if (function.equals("sin")) { // Sine Function
+			if (paramater.isEmpty()) { // normal sin
+				return (double) Math.round(Math.sin(insideValue) * 1000000000) / 1000000000;
+			} else if (paramater.equals("h")) { // hyperbolic sin
+				return (double) Math.round(Math.sinh(insideValue) * 1000000000) / 1000000000;
+			} else { // invalid paramater
+				throw new IllegalArgumentException("Invalid Function Paramater");
+			} 
+		} 
+		
+		if (function.equals("cos")) { // Cosine Function
+			if (paramater.isEmpty()) { // normal cos
+				return (double) Math.round(Math.cos(insideValue) * 1000000000) / 1000000000;
+			} else if (paramater.equals("h")) { // hyperbolic cos
+				return (double) Math.round(Math.cosh(insideValue) * 1000000000) / 1000000000; 
+			} else { // invalid paramater
+				throw new IllegalArgumentException("Invalid Function Paramater");
+			}
+		} 
+		
+		if (function.equals("tan")) { // Tangent Function
+			if (paramater.isEmpty()) { // normal tan
+				return (double) Math.round(Math.tan(insideValue) * 1000000000) / 1000000000;
+			} else if (paramater.equals("h")) { // hyperbolic tan
+				return (double) Math.round(Math.tanh(insideValue) * 1000000000) / 1000000000;
+			} else { // invalid paramater
+				throw new IllegalArgumentException("Invalid Function Paramater");
+			}
 		}
+		
+		if (function.equals("ln")) { // Natural Log Function
+			if (paramater.isEmpty()) {
+				if (insideValue != 0) {
+					return (double) Math.round(Math.log(insideValue) * 1000000000) / 1000000000;
+				} else {
+					throw new IllegalArgumentException("ln 0 = Undefined");
+				}
+			} else { // Invalid Paramater
+				throw new IllegalArgumentException("ln Function Can't Use Paramaters");
+			}
+		}
+		
+		if (function.equals("log")) { // Log Function
+			if (paramater.isEmpty() || paramater.equals("10")) { // Log base 10
+				if (insideValue != 0) {
+					return (double) Math.round(Math.log10(insideValue) * 1000000000) / 1000000000;
+				} else {
+					throw new IllegalArgumentException("log 0 = Undefined");
+				}
+			} else { // log with a different base
+				try {
+					Double base = Double.parseDouble(paramater);
+					if (insideValue != 0) {
+						if (base > 1) {
+							return (double) Math.round((Math.log(insideValue) / Math.log(base)) * 1000000000) / 1000000000;
+						} else {
+							throw new IllegalArgumentException("log base must be > 1");
+						}
+					} else {
+						throw new IllegalArgumentException("log 0 = Undefined");
+					}
+				} catch (NumberFormatException e) { // invalid base
+					throw new IllegalArgumentException("log Base Must Be a Number");
+				}
+			}
+		}
+		
+		if (function.equals("abs")) { // Absolute Value Function
+			if (paramater.isEmpty()) {
+				return Math.abs(insideValue);
+			} else { // Invalid Paramater
+				throw new IllegalArgumentException("abs Function Can't Use Paramaters");
+			}
+		}
+		
+		if (function.equals("sqrt")) { // Square Root Function
+			if (paramater.isEmpty()) { 
+				return Math.sqrt(insideValue);
+			} else { // Invalid Paramater
+				throw new IllegalArgumentException("sqrt Function Can't Use Paramaters");
+			}
+		}
+		
+		if (function.equals("root")) {
+			if (!paramater.isEmpty()) {
+				try { // nth root where n = paramater
+					Double root = Double.parseDouble(paramater);
+					return Math.pow(insideValue, (1/root));
+				} catch (Exception e) { // root is not a number
+					throw new IllegalArgumentException("root Paramater Must Be a Number");
+				}
+			} else { // no root given
+				throw new IllegalArgumentException("root Function Requires a Paramater");
+			}
+		}
+		
+		if (function.equals("asin")) { // Arcsin Function
+			if (paramater.isEmpty()) {
+				return (double) Math.round(Math.asin(insideValue) * 1000000000) / 1000000000;
+			} else { // Invalid Paramater
+				throw new IllegalArgumentException("asin Function Can't Use Paramaters");
+			}
+		}
+		
+		if (function.equals("acos")) { // Arccos Function
+			if (paramater.isEmpty()) {
+				return (double) Math.round(Math.acos(insideValue) * 1000000000) / 1000000000;
+			} else { // Invalid Paramater
+				throw new IllegalArgumentException("acos Function Can't Use Paramaters");
+			}
+		}
+		
+		if (function.equals("atan")) { // Arctan Function
+			if (paramater.isEmpty()) {
+				return (double) Math.round(Math.atan(insideValue) * 1000000000) / 1000000000;
+			} else { // Invalid Paramater
+				throw new IllegalArgumentException("atan Function Can't Use Paramaters");
+			}
+		}
+		
+		// If none of the above functions are matched:
+		throw new UnsupportedOperationException("Unexpected Error: function argument does not match possible functions");
 	}
 	
 	public static Double solveExpression(String expression) {
+		
 		// Replace constants with their values:
 		expression = expression.replaceAll("e", "(" + Math.E + ")");
 		expression = expression.replaceAll("pi", "(" + Math.PI + ")");
@@ -154,6 +270,7 @@ public final class Calculator {
 		expression = expression.replaceAll("\\)\\(", "*"); // if there is a ")(" add a *
 		expression = expression.replaceAll("(?<=\\d)\\(", "*("); // if there is a "number(" add a *
 		expression = expression.replaceAll("\\)(?=\\d)", ")*"); // if there is a ")number" add a *
+		
 		
 		char[] tokens = expression.toCharArray(); 	// Converts the expression into an array of characters.
 		
@@ -179,9 +296,8 @@ public final class Calculator {
 				}
 				
 				
-				while ((i+1) < tokens.length && (Character.isDigit(tokens[i+1]) || tokens[i+1] == '.')) { 		// if the character right after the last one is a number or decimal too, add that to an overall number.
-						// increase the i and add that digit to the overall number
-					i++;
+				while ((i+1) < tokens.length && (Character.isDigit(tokens[i+1]) || tokens[i+1] == '.')) { // if the character right after the last one is a number or decimal too, add that to an overall number.
+					i++; // increase the i and add that digit to the overall number
 					number += tokens[i];
 				}
 				
@@ -294,7 +410,7 @@ public final class Calculator {
 		} else if (operator == '-') {		// Use of math operator "-"
 			return a - b;
 		} else if (operator == '^') {		// Use of math operator "^"
-			return Math.pow(a, b);
+			return (double) Math.round(Math.pow(a, b) * 1000000000) / 1000000000;
 		} else {
 			throw new IllegalArgumentException("Invalid Input");
 		}

@@ -111,7 +111,7 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		btnLN = new CalculatorButton(0, 8, Color.DARK_GRAY, "ln"); btnLN.setCustomFont(smallerFont); btnLN.setInsertText("ln()"); btnLN.isFunction = true;
 		btnE = new CalculatorButton(1, 3, Color.DARK_GRAY, "e");
 		btnPI = new CalculatorButton(2, 3, Color.DARK_GRAY, "\u03C0"); btnPI.setCustomFont(smallerFont); btnPI.setInsertText("pi");
-		btnSqrt = new CalculatorButton(3, 3, Color.DARK_GRAY, "\u221A"); btnSqrt.setCustomFont(smallerFont); btnSqrt.setInsertText("sqrt()"); btnSqrt.isFunction = true;
+		btnSqrt = new CalculatorButton(3, 3, Color.DARK_GRAY, "\u221A"); btnSqrt.setCustomFont(smallerFont); btnSqrt.setInsertText("sqrt()"); btnSqrt.setInvertValues("\u221B", "root3()"); btnSqrt.isFunction = true; 
 		IOArea = new JTextField();
 
 		// adds all buttons to the list of buttons.
@@ -254,6 +254,9 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 					IOArea.setText(ex.getMessage());
 				} catch (ArithmeticException ex) {
 					IOArea.setText(ex.getMessage());
+				} catch (UnsupportedOperationException ex) {
+					IOArea.setText(ex.getMessage());
+					ex.printStackTrace();
 				}
 				
 				btnHistory.setText(existingText + " = " + previousAns);
