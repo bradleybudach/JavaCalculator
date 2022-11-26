@@ -52,6 +52,7 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -83,7 +84,7 @@ public class CalculatorApp extends JFrame implements ActionListener, KeyListener
 		setLayout(new GridBagLayout()); // grid layout with custom rows
 		setSize(550, 900); // sets the default size for the frame	
 		getContentPane().setBackground(Color.DARK_GRAY); // Frame background color
-		Image icon = Toolkit.getDefaultToolkit().getImage("C:\\Users\\wb8295nb\\eclipse-workspace\\GroupProject\\src\\logo.png"); // gets the icon image
+		Image icon = new ImageIcon(getClass().getResource("../logo.png")).getImage(); // gets the icon image
 		setIconImage(icon); // sets the icon
 		
 		previousAns = ""; // initializes previouAns
