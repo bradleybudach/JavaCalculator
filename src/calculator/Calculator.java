@@ -42,7 +42,7 @@ public final class Calculator {
      *    2: works backwards to solve all functions in the expression	
      *    3: once the expression is free of functions, evaluate it with respect to order of operations
 	 */
-	public static Double evaluate(String expression) {
+	public static double evaluate(String expression) {
 		boolean functionFound = false; // tracks if it finds a function in the expression
 		Stack<String> expressionLayers = new Stack<String>(); // stores each layer of the expression if there are functions inside of functions
 		Stack<String[]> outsideFunctions = new Stack<String[]>(); // stores information about the function outside of the current one if there are layers of functions
@@ -143,7 +143,10 @@ public final class Calculator {
      *    3: if there is a function paramater, check if it is one of the paramaters that works with the function and do the calculation based on that paramater
      *    4: throw any errors if the paramater is incorrect, missing, or there shouldn't be one for the given function
 	 */
-	public static Double solveFunction(String function, String paramater, Double insideValue) {
+	public static double solveFunction(String function, String paramater, double insideValue) {
+		// replaces paramaters if they are a constant:
+		paramater = paramater.replaceAll("e", Double.toString(Math.E)); // e
+		paramater = paramater.replaceAll("pi", Double.toString(Math.PI)); // pi
 		
 		if (function.equals("sin")) { // Sine Function
 			if (paramater.isEmpty()) { // normal sin
@@ -285,7 +288,7 @@ public final class Calculator {
      *     6: returns the final result
      *     7: throws possible errors in the calculations
 	 */
-	public static Double solveExpression(String expression) {
+	public static double solveExpression(String expression) {
 		
 		// Expression Sanatization:
 		// Replace constants with their values:

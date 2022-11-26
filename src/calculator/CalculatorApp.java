@@ -14,7 +14,7 @@
  *      - The result of a given expression
  * Required packages:
  * 		- java.awt.Color; java.awt.Dimension; java.awt.Font; java.awt.GridBagConstraints; java.awt.GridBagLayout;
-		- java.awt.Image; java.awt.Toolkit; java.awt.event.ActionEvent; java.awt.event.ActionListener; java.awt.event.KeyEvent;
+		- java.awt.Image; javax.swing.ImageIcon; java.awt.event.ActionEvent; java.awt.event.ActionListener; java.awt.event.KeyEvent;
 		- java.awt.event.KeyListener; java.awt.event.WindowAdapter; java.awt.event.WindowEvent; java.util.ArrayList; java.util.Arrays;
 		- javax.swing.BorderFactory; javax.swing.JFrame; javax.swing.JTextField; javax.swing.SwingConstants;
  * Test cases:
@@ -42,7 +42,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
