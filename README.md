@@ -1,6 +1,6 @@
 # Java Calculator
 
-GUI based calculator application written in Java.
+GUI based calculator application written in Java.<br>
 Authors: Bradley Budach, Pronob Kumar
 <br><br>
 ## Install Instructions:
