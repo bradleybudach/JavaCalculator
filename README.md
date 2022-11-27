@@ -1,12 +1,12 @@
 # Java Calculator
 
 GUI based calculator application written in Java.
-
-<br>
 Authors: Bradley Budach, Pronob Kumar
-<br>
+<br><br>
+## Install Instructions:
 This project was written in the eclipse editor. To run the project, you must import all the files into a project folder in eclipse. 
-
+<br>
+## Usage
 When the project is run it will create a window where the input and output can occur.
 Press the buttons to write the expression you are trying to solve or press the corresponding keys on the keyboard.
 Any valid mathematical operation is accepted.
